@@ -1,0 +1,80 @@
+@import url("reset.css");
+
+/* HTML5 */
+header, section, footer {
+    display: block;
+}
+
+body {
+    background: url("../img/bg.jpg");
+    width: 100%;
+}
+
+header {
+    width: 90%;
+    padding: 37px 5% 0 5%;
+}
+
+section#content {
+    width: 90%;
+    padding: 0 5%;
+}
+
+p#info_title {
+    padding-top: 14px;
+}
+
+footer {
+    width: 90%;
+    padding: 68px 5% 0 5%;
+}
+
+img#noie {
+    position: absolute;
+    right: 5%;
+    top: 37px;
+    height: 64px;
+}
+
+
+/* Typography */
+body {
+    font-family: "Architects Daughter", cursive;
+    font-size: 20px;
+    line-height: 27px;
+    color: #003366;
+}
+
+p#ip {
+    font-family: "Days One", cursive;
+    font-size: 75px;
+    line-height: 100px;
+    text-align: center;
+}
+
+span {
+    color: #D40000;
+}
+
+ul#info_text {
+    text-indent: 50px;
+}
+
+ul li:before {
+    content: "\00BB \0020";
+}
+
+p#credits {
+    font-family: "Lucida Grande", Georgia, Verdana;
+    font-size: 16px;
+}
+
+a {
+    font-family: "Lucida Grande", Georgia, Verdana;
+    color: #003366;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

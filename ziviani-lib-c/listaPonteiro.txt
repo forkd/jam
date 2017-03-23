@@ -1,0 +1,70 @@
+/* Estrutura de uma lista usando ponteiros */
+typedef struct Celula *Ponteiro;
+
+typedef struct {
+   int chave;
+   /* Outros componentes */
+} Item;
+
+typedef struct Celula {
+   Item item;
+   Ponteiro prox;
+} celula;
+
+typedef struct {
+   Ponteiro primeiro, ultimo;
+} Lista;
+
+/* Procedimentos basicos */
+void criaLista ( Lista *lista )
+{
+   lista -> primeiro = ( Ponteiro ) malloc( sizeof( Celula ) );
+   lista -> ultimo = lista -> primeiro;
+   lista -> primeiro -> prox = NULL;
+} /* criaLista */
+
+int isVazia ( Lista lista )
+{
+   return ( lista.primeiro == lista.ultimo );
+} /* isVazia */
+
+void insere ( Item x, Lista *lista )
+{
+   lista -> ultimo -> prox = ( Ponteiro ) malloc( sizeof( Celula ) );
+   lista -> ultimo = lista -> ultimo -> prox;
+   lista -> ultimo -> item = x;
+   lista -> ultimo -> prox = NULL;
+} /* insere */
+
+void retira ( Ponteiro p, Lista *lista, Item *item )
+{
+   /* O item a ser retirado, eh o seguinte ao apontado por p */
+      
+   Ponteiro q;
+   
+   if ( isVazia( *lista ) || p == NULL || p -> prox == NULL ) {
+      printf( "ERRO: Lista vazia ou posição inexistente." );
+      return;
+   }
+   
+   q = p -> prox;
+   *item = q -> item;
+   p -> prox = q -> prox;
+   
+   if ( p -> prox == NULL )
+      lista -> ultimo = p;
+   
+   free( q );
+} /* retira */
+
+void imprime ( Lista lista )
+{
+   Ponteiro aux;
+   
+   aux = lista.primeiro -> prox;
+   
+   while ( aux != NULL ) {
+      printf( "%12d\n", aux -> item.chave );
+      aux = aux -> prox;
+   }
+} /* imprime */

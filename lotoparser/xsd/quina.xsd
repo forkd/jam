@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://joselopes.org">
+
+<xs:element name="quina">
+<xs:complexType>
+    <xs:element name="concourse">
+    <xs:complexType>
+        <xs:attribute name="id" type="xs:integer" use="required"/>
+        <xs:element name="draw_date" type="xs:date"/>
+        <xs:element name="ball" type="xs:integer" minOccurs="5" 
+            maxOccurs="5">
+        <xs:complexType>
+            <xs:attribute name="id" type="xs:integer" use="required"/>
+        </xs:complexType>
+        </xs:element>
+        <xs:element name="total_collection" type="xs:decimal"/>
+        <xs:element name="hits_5" type="win_ave"/>
+        <xs:element name="hits_4" type="win_ave"/>
+        <xs:element name="hits_3" type="win_ave"/>
+        <xs:complexType type="win_ave">
+            <xs:element name="winners" type="xs:integer"/>
+            <xs:element name="average" type="xs:decimal"/>
+        </xs:complexType>
+        <xs:element name="accumulated" type="xs:boolean"/>
+        <xs:element name="earned_value" type="xs:decimal"/>
+        <xs:element name="estimated_prize" type="xs:decimal"/>
+    </xs:complexType>
+    </xs:element>
+</xs:complexType>
+</xs:element>
+
+</xs:schema>

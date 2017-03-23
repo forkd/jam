@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<glade-interface>
+  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-naming-policy project-wide -->
+  <widget class="GtkAboutDialog" id="aboutdialog">
+    <property name="border_width">5</property>
+    <property name="resizable">False</property>
+    <property name="modal">True</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="icon">../pics/Logo-128.png</property>
+    <property name="type_hint">normal</property>
+    <property name="has_separator">False</property>
+    <property name="program_name">GNUSplit</property>
+    <property name="version">0.0.1</property>
+    <property name="copyright" translatable="yes">Jos&#xE9; Lopes de Oliveira J&#xFA;nior</property>
+    <property name="comments" translatable="yes">Spplits/Joins/Checksums files</property>
+    <property name="website">http://github.com/joselopes/gnusplit</property>
+    <property name="website_label" translatable="yes">Official website</property>
+    <property name="license" translatable="yes">GNUSplit - Splitts/Joins/Checksums files.
+Copyright (C) 2010  Jos&#xE9; Lopes de Oliveira J&#xFA;nior
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</property>
+    <property name="authors">Jos&#xE9; Lopes O. J&#xFA;nior &lt;http://joselopes.org&gt;</property>
+    <property name="documenters">Jos&#xE9; Lopes O. J&#xFA;nior &lt;http://joselopes.org&gt;</property>
+    <property name="artists">klsgfx &lt;http://www.openclipart.org/user-detail/klsgfx&gt;
+Jos&#xE9; Lopes O. J&#xFA;nior &lt;http://joselopes.org&gt;</property>
+    <property name="logo">../pics/Logo-256.png</property>
+    <child internal-child="vbox">
+      <widget class="GtkVBox" id="dialog-vbox1">
+        <property name="visible">True</property>
+        <property name="spacing">2</property>
+        <child>
+          <placeholder/>
+        </child>
+        <child internal-child="action_area">
+          <widget class="GtkHButtonBox" id="dialog-action_area1">
+            <property name="visible">True</property>
+            <property name="layout_style">end</property>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+</glade-interface>

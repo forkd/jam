@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://joselopes.org">
+
+<xs:element name="lotomania">
+<xs:complexType>
+    <xs:element name="concourse">
+    <xs:complexType>
+        <xs:attribute name="id" type="xs:integer" use="required"/>
+        <xs:element name="draw_date" type="xs:date"/>
+        <xs:element name="ball" type="xs:integer" minOccurs="20" 
+            maxOccurs="20">
+        <xs:complexType>
+            <xs:attribute name="id" type="xs:integer" use="required"/>
+        </xs:complexType>
+        </xs:element>
+        <xs:element name="total_collection" type="xs:decimal"/>
+        <xs:element name="hits_20" type="win_and_ave_and_acc"/>
+        <xs:element name="hits_19" type="win_and_ave_and_acc"/>
+        <xs:element name="hits_18" type="win_and_ave_and_acc"/>
+        <xs:element name="hits_17" type="win_and_ave_and_acc"/>
+        <xs:element name="hits_16" type="win_and_ave_and_acc"/>
+        <xs:element name="hits_0" type="win_and_ave_and_acc"/>
+        <xs:complexType type="win_and_ave_and_acc">
+            <xs:element name="winners" type="xs:integer"/>
+            <xs:element name="average" type="xs:decimal"/>
+            <xs:element name="accumulated" type="xs:decimal"/>
+        </xs:complexType>
+        <xs:element name="estimated_prize" type="xs:decimal"/>
+    </xs:complexType>
+    </xs:element>
+</xs:complexType>
+</xs:element>
+
+</xs:schema>

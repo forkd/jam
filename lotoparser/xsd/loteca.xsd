@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://joselopes.org">
+
+<xs:element name="loteca">
+<xs:complexType>
+    <xs:element name="concourse">
+    <xs:complexType>
+        <xs:attribute name="id" type="xs:integer" use="required"/>
+        <xs:element name="draw_date" type="xs:date"/>
+        <xs:element name="hits_14" type="win_ave_acc_ear"/>
+        <xs:element name="hits_13" type="win_ave_acc_ear"/>
+        <xs:element name="hits_12" type="win_ave_acc_ear"/>
+        <xs:complexType type="win_ave_acc_ear">
+            <xs:element name="winners" type="xs:integer"/>
+            <xs:element name="average" type="xs:decimal"/>
+        </xs:complexType>
+        <xs:element name="accumulated" type="xs:boolean"/>
+        <xs:element name="earned_value" type="xs:decimal"/>
+        <xs:element name="game" minOccurs="14" maxOccurs="14">
+        <xs:complexType>
+            <xs:attribute name="id" type="xs:integer" use="required"/>
+        </xs:complexType>
+        </xs:element>
+        <xs:element name="total_collection" type="xs:decimal"/>
+        <xs:element name="estimated_prize" type="xs:decimal"/>
+    </xs:complexType>
+    </xs:element>
+</xs:complexType>
+</xs:element>
+
+</xs:schema>

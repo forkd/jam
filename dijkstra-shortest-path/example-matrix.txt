@@ -1,0 +1,5 @@
+i 10 3 i i
+i i 4 i 1
+i 7 i 5 12
+13 i i i i
+i i i 21 i
