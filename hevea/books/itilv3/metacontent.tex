@@ -1,0 +1,73 @@
+% Hevea - ITILv3 Resumo
+% An ITILv3 overview.
+%
+% Author: José Lopes de Oliveira Jr. <jilo.cc>
+%
+% LICENSE
+% This program is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%%
+
+
+\fancyhead{}  % clear header
+\fancyfoot{}  % clear footer
+\fancyhead[RO]{\rightmark}  % section name in upper right
+\fancyhead[LE]{\leftmark}  % chapter name in upper left
+\fancyfoot[LO,RE]{\thepage}  % numbering in outter border
+
+
+% Preparing for textinfo content
+\pagestyle{empty}
+\pagenumbering{roman}
+
+\input{./metacontent-title.tex}  % \include{} can't be nested
+
+% Back cover
+\hspace{.1cm}\centerline{\includegraphics[scale=.7]{img/indiecode}}
+
+% Cataloguing rules
+\vspace{3.5cm}
+\fbox{
+    \begin{minipage}[b][7.5cm][c]{\linewidth}
+        Oliveira Júnior, José Lopes\\
+        ITIL\textsuperscript{\textregistered}v3: Resumo\\
+        1\textordfeminine edição, \pageref{LastPage} páginas --- março de 2012\
+        \begin{enumerate}
+            \item ITIL\textsuperscript{\textregistered}
+            \item Tecnologia da Informação
+            \item Governança de TI
+        \end{enumerate}
+        I. Título\\
+        \vfill
+        Correções, sugestões ou críticas: \url{http://jilo.cc}\\
+    \end{minipage}
+}
+
+\vspace{1cm}
+\hfill\fbox{
+    \begin{minipage}{10cm}
+        O trabalho \textbf{ITIL\textsuperscript{\textregistered}v3: Resumo} de
+        \href{http://jilo.cc}{José Lopes Oliveira Jr.} foi licenciado com uma
+        \href{http://creativecommons.org/licenses/by-sa/3.0/br/}{CC BY-SA 3.0
+        Brasil}.
+    \end{minipage}
+}\hfill
+
+% List of elements
+\printnomenclature[3cm]  % acronym [3cm] Explanation
+\tableofcontents
+
+% Preparing for the content
+\newpage
+\pagestyle{fancy}
+\pagenumbering{arabic}

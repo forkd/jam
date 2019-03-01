@@ -1,0 +1,29 @@
+rc="http://joselop.es/app/wor/wp-content/uploads/2010/12/german_euro_coins-300x225.jpg" alt="German 2 Euro Coins - Wallpampers" title="German 2 Euro Coins - Wallpampers" width="300" height="225" class="alignright size-medium wp-image-166" />A primeira etapa para se fazer o lançamento dos dados do cartão é montar a fatura do mesmo. Uma fatura de cartão consiste, basicamente, de contas a serem pagas à vista e contas a serem pagas a prazo.
+
+Para exemplificar, tomemos a compra de uma bermuda e um tênis. A bermuda custou R$ 50,00 e foi comprada à vista no cartão. Já o tênis custou R$ 200,00 e foi comprado de 2 vezes no cartão. Assim sendo, a fatura deste mês é composta por R$ 50,00 + R$ 100,00 = R$ 150,00.
+
+O lançamento de cada conta da fatura deve ser feito através de uma transação entre Passivo:Contas a Pagar:Cartão de Crédito e o seu correspondente em Ativos ou Despesas, dependendo do bem adquirido - leia o primeiro post para entender sobre bens de consumo. No caso deste exemplo, prefiro considerar os dois bens adquiridos como subprodutos de Despesas.
+
+<h3>À Vista</h3>
+
+Os bens que serão pagos à vista podem ser lançados diretamente como uma transação entre Passivo:Contas a Pagar:Cartão de Crédito e o seu par em Ativos ou Despesas. No caso da bermuda, pode-se classificá-la como uma despesa com vestuário. Assim abra Passivos:Contas a Pagar:Cartão de Crédito e crie uma transação para Despesas:Vestuário no valor do bem, indicando esse valor na coluna Cobrar. Eu uso colocar na coluna Descrição, a indicação igual à que vem na fatura do cartão, para facilitar a identificação.
+
+<h3>A Prazo</h3>
+
+Os bens que serão pagos a prazo são um pouco mais complicados de serem lançados. A primeira coisa a se fazer é lançar o valor total da compra como uma transação entre Passivo:Contas a Pagar e o correspondente à compra em Ativos ou Despesas - como descrito anteriormente. Dessa forma, no caso do tênis, dever-se-ia criar uma transação entre Passivo:Contas a Pagar e Despesas:Vestuário, indicando o valor da compra (R$ 200,00) na coluna Cobrar. Normalmente eu coloco o nome como vem na fatura no campo Descrição, mas omitindo o número da parcela (e.g., Tênis).
+
+O segundo passo para lançar a conta parcelada é adicionar o valor da parcela à fatura a ser paga. Para isso, crie uma transação entre Passivo:Contas a Pagar e Passivo:Contas a Pagar:Cartão de Crédito, indicando o valor da parcela na coluna Decrescer. Eu gosto de colocar no campo Descrição o nome que coloquei na transação feita anteriormente, seguida por Parcela/Total (e.g., Tênis 1/2). Isso me permite saber de cara a qual parcela aquela conta se refere.
+
+<h3>Pagando a Fatura</h3>
+
+- Parte chata...
+
+Perceba que em Passivo:Contas a Pagar:Cartão de Crédito a fatura já está montada. Para pagá-la, crie uma transação entre Passivo:Contas a Pagar:Cartão de Crédito e a conta de onde sairá o dinheiro (e.g., Ativos:Ativos Atuais:Conta Corrente), indicando o valor do pagamento na coluna Pagamento.
+
+Se você seguiu  este exemplo, note que em Passivo está constando um débito de R$ 100,00, que corresponde à segunda parcela do tênis. No próximo mês será necessário fazer uma nova transferência entre Passivo:Contas a Pagar e Passivo:Contas a Pagar:Cartão de Crédito no valor da última parcela (que teria uma descrição como Tênis 2/2).
+
+Veja nas figuras 1 e 2 como ficaram as contas Passivo:Contas a Pagar e Passivo:Contas a Pagar:Cartão de Crédito depois que a fatura foi montada e paga.
+
+<a rel="lightbox" href="http://joselop.es/app/wor/wp-content/uploads/2010/12/gnucash_exemplo_contas_pagar.png"><img src="http://joselop.es/app/wor/wp-content/uploads/2010/12/gnucash_exemplo_contas_pagar-300x132.png" alt="Figura 1 - Exemplo de Contas a Pagar" title="Figura 1 - Exemplo de Contas a Pagar" width="300" height="132" class="aligncenter size-medium wp-image-114" /></a>
+
+<a rel="lightbox" href="http://joselop.es/app/wor/wp-content/uploads/2010/12/gnucash_exemplo_cartao_credito.png"><img src="http://joselop.es/app/wor/wp-content/uploads/2010/12/gnucash_exemplo_cartao_credito-300x132.png" alt="Figura 2 - Exemplo de Cartão de Crédito" title="Figura 2 - Exemplo de Cartão de Crédito" width="300" height="132" class="aligncenter size-medium wp-image-115" /></a>

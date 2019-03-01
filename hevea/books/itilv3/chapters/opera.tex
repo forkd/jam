@@ -1,0 +1,219 @@
+% Hevea - ITILv3 Resumo
+% An ITILv3 overview.
+%
+% Author: José Lopes de Oliveira Jr. <jilo.cc>
+%
+% LICENSE
+% This program is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%%
+
+
+\chapter{Operação de Serviço}
+\label{cha:opera}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\textwidth]{img/cheek_cells}\\
+    {\scriptsize Cheeck Cells --- 7th Grade Life Science Classroom Blog}
+\end{figure}
+
+Introduz, explica e detalha atividades de entrega e controle para alcançar a
+excelência operacional de um serviço. É uma fase mais prolongada do ciclo de
+vida, pois o serviço deverá ser mantido em bom estado operacional até que perca
+sua utilidade e seja aposentado. O propósito desta fase é coordenar e realizar
+as atividades e processos requeridos para gerenciar serviços em níveis
+acordados com usuários e clientes.
+
+
+\section{Conceitos}
+\label{sec:opera:conceitos}
+\begin{itemize}
+    \item Requisição de Serviço: é um pedido por uma mudança ou para acessar um
+        serviço de TI.
+    \item Evento: notificação criada por um serviço, IC ou ferramenta de
+        monitoramento causada pelo desvio de desempenho da infraestrutura ou de
+        entrega do serviço.
+    \item Alerta: aviso ou advertência sobre uma meta, mudança ou falha que
+        ocorreu.
+    \item Incidente: interrupção inesperada ou redução na qualidade de um
+        serviço de TI.
+    \item Problema: causa de um ou mais incidentes.
+    \item Solução de Contorno: meio temporário de resolver questões ou
+        dificuldades.
+    \item Erro Conhecido: problema que tem a causa raíz documentada e uma
+        Solução de Contorno identificada.
+	\item Base de Erros Conhecidos: local onde se registram Erros Conhecidos.
+    \item Impacto, Urgência e Prioridade: É importante avaliar o impacto e a
+        urgência de incidentes, problemas ou mudanças nos processos de negócio,
+        para determinar suas prioridades. Para o impacto deve-se considerar
+        quantas pessoas ou sistemas serão prejudicados. Já a urgência determina
+        a velocidade com que o incidente precisa ser resolvido.
+\end{itemize}
+
+
+\section{Princípios}
+\label{sec:opera:principios}
+\begin{itemize}
+    \item Visão Interna do Negócio $\times$ Visão Externa do Negócio: ter
+        somente a visão interna, pode levar a focar em sistemas pouco
+        importantes ao negócio. Ter só a visão externa, pode levar o pessoal de
+        TI a prometer o que não pode cumprir.
+    \item Estabilidade $\times$ Agilidade: se a TI pensa apenas na
+        estabilidade, ela se torna lenta para se adaptar às necessidades do
+        negócio. Se ela é muito ágil, não faz um bom planejamento das mudanças
+        e perde estabilidade.
+    \item Qualidade do Serviço $\times$ Custo do Serviço: a TI precisa fazer um
+        uso ótimo dos recursos.
+    \item Reativa $\times$ Pró-ativa: uma TI reativa só age com uma pressão
+        externa. Uma TI pró-ativa está sempre buscando oportunidades de
+        melhorias ---o que pode levar à perda do foco na necessidade real do
+        negócio.
+\end{itemize}
+
+A lição que se tira destas comparações é que todos estes aspectos precisam ser
+balanceados pelo pessoal de TI. Somente assim será possível prover serviços que
+gerem valor ao negócio e ao cliente, de  forma eficiente e eficaz.
+
+
+\section{Processos}
+\label{sec:opera:processos}
+\subsection{Gerenciamento de Incidente}
+Lida com todos os incidentes ---falhas e dúvidas. A meta deste processo é
+restaurar a operação normal do serviço o mais rápido possível e minimizar os
+impactos adversos nas operações do negócio. Inclui qualquer evento que
+interrompa ou que possa interromper um serviço. Faz uso de alguns conceitos:
+\begin{itemize}
+	\item Limites de Tempo: acorda os limites de tempo de acordo com os ANSs;
+    \item Modelos de Incidente: determinam os passos necessários para executar
+        o processo corretamente; e
+    \item Incidentes Graves: precisam ser resolvidos com urgência, com a
+        utilização de um procedimento específico.
+\end{itemize}
+
+Neste processo, além do Gerente de Incidente, há as responsabilidades das
+equipes de suporte, que poderão ser agrupadas em vários níveis, cada um mais
+especializado que o outro. Assim, caso um nível não consiga diagnosticar o
+incidente, ele o repassa para o nível imediatamente acima, mais especializado.
+
+
+\subsection{Gerenciamento de Evento}
+Um evento é qualquer ocorrência detectável ou discernível, que seja
+significativa para a gestão da infraestrutura de TI ou para a entrega do
+serviço de TI e avaliação do impacto que um desvio pode causar aos serviços.
+
+O Gerenciamento de Evento objetiva proporcionar e fornecer entradas para muitos
+processos e atividades da Operação de Serviço. Pode ser aplicado para qualquer
+aspecto do Gerenciamento de Serviço que precise ser controlado e que pode ser
+automatizado.
+
+Não é necessário possuir o papel de Gerente de Evento, pois suas atividades são
+delegadas às funções de TI, como a Central de Serviço.
+
+
+\subsection{Cumprimento de Requisição}
+O termo “cumprimento e requisição” é usado como uma descrição genérica para
+muitos tipos de variáveis de demandas colocadas sobre o departamento de TI por
+seus usuários. Consiste das seguintes atividades:
+\begin{itemize}
+	\item Seleção de Menu;
+	\item Autorização Financeira;
+	\item Cumprimento; e
+	\item Conclusão.
+\end{itemize}
+
+A propriedade do Cumprimento de Requisição fica com a Central de Serviço, que
+monitora, escala, despacha e frequentemente preenche as requisições dos
+usuários.
+
+
+\subsection{Gerenciamento de Problemas}
+Tem a intenção de encontrar erros conhecidos na infraestrutura de TI. Os
+problemas são a causa de um ou mais incidentes. Um incidente nunca vira
+problema: sempre haverá 2 registros separados, um para cada processo.
+
+Neste processo há o envolvimento de 2 papéis: Gerente de Problema e Grupos de
+Resolução de Problemas.
+
+
+\subsection{Gerenciamento de Acesso}
+Concede ao usuário o direito de usar um serviço e nega acessos de usuários não
+autorizados. É composto de alguns conceitos básicos:
+\begin{itemize}
+    \item Acesso: é o nível que estende a funcionalidade ou dados que um
+        usuário pode usar;
+    \item Identidade: informação única que distingue um indivíduo, verifica o
+        estado;
+	\item Direitos: configurações atuais que permitem o acesso dos usuários;
+    \item Serviços dos Grupos de Serviço: é o acesso a um conjunto de serviços
+        ou grupos de usuários, mas não o acesso separado aos serviços; e
+    \item Serviços de Diretório: refere-se a uma ferramenta que permite
+        gerenciar acessos e direitos.
+\end{itemize}
+
+Este processo é composto das seguintes atividades: Verificação da Legitimidade
+das Requisições, Fornecimento dos Direitos, Monitoramento do Estado de
+Identidade ---Mudança de Papéis---, Registro e Monitoramento do Acesso, Remoção
+e Limitação de Direitos.
+
+O Gerenciamento de Acesso é uma sobreposição do Gerenciamento de Segurança e do
+Gerenciamento de Disponibilidade.
+
+
+\section{Funções}
+\subsection{Central de Serviços}
+É uma unidade funcional que está envolvida em vários eventos de serviço. Deve
+funcionar como um ponto único de contato para os usuários no dia a dia. Há 4
+tipos de Central de Serviços:
+\begin{itemize}
+    \item Local: é criada para atender necessidades locais de cada unidade de
+        negócio;
+    \item Centralizada: centraliza todas as solicitações de suporte em um único
+        local;
+    \item Virtual: suporte espalhado por diversos países – sempre que o usuário
+        fizer uma chamada, dependendo do horário, ele será atendido por alguém
+        em uma posição geográfica diferente; e
+    \item Siga o Sol: é a combinação de centrais que estão dispersas
+        geograficamente, fornecendo suporte 24 horas/dia a um custo
+        relativamente baixo.
+\end{itemize}
+
+A equipe de suporte deverá ter as seguintes qualificações, no mínimo:
+Habilidades interpessoais, Entendimento dos serviços e Conhecimento técnico.
+
+Os seguintes papéis figuram nesta função: Gerente de Central de Serviços,
+Supervisor de Central de Serviços e Analista de Suporte.
+
+
+\subsection{Gerenciamento Técnico}
+É a função responsável por fornecer habilidades técnicas para o suporte de
+serviços de TI e para o Gerenciamento da Infraestrutura de TI. Em pequenas
+organizações, pode estar em 1 departamento e em grandes organizações, pode
+estar distribuído por vários departamentos.
+
+
+\subsection{Gerenciamento de Aplicação}
+É responsável por gerenciar aplicativos durante seu ciclo de vida. Sua função é
+realizada por qualquer departamento, grupo ou equipe envolvida na gestão e
+suporte de aplicativos operacionais. Uma das decisões-chave à qual ele
+contribui é a de comprar um aplicativo ou criá-lo ---que é discutido no Desenho
+de serviço, Capítulo \ref{cha:design}. Esta função também pode ser distribuída
+em grupos. O Gerenciamento de Aplicação não é responsável pelo desenvolvimento
+do software ---é responsável pela manutenção de aplicações.
+
+
+\subsection{Gerenciamento de Operações de TI}
+É a função responsável pela gestão contínua e manutenção de uma infraestrutura
+de TI de uma organização, para assegurar a entrega do ANS ao negócio. Consiste
+de 2 sub-funções: Controle de Operações de TI e Gerenciamento das Instalações.

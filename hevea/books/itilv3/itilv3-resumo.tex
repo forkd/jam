@@ -1,0 +1,73 @@
+% Hevea - ITILv3 Resumo
+% An ITILv3 overview.
+%
+% Author: José Lopes de Oliveira Jr. <jilo.cc>
+%
+% LICENSE
+% This program is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%%
+
+
+%%
+% PREAMBLE
+%
+\documentclass[12px,a4paper,twoside]{book}
+
+% Draft mark
+% Comment these lines in final version.
+%\usepackage{draftwatermark}
+%\SetWatermarkText{RASCUNHO}
+%\SetWatermarkScale{4}
+
+% General Purpose Packages
+\usepackage{amsfonts}   % To use \times char
+\usepackage{fancyhdr}
+\usepackage{graphicx}   % For including pictures
+\usepackage{lastpage}   % Allows using LastPage
+
+% Encoding and Locale
+\usepackage[utf8]{inputenc}     % UTF-8 input encoding
+\usepackage[T1]{fontenc}        % Extended font encoding
+\usepackage[brazilian]{babel}   % Locale is pt_BR
+
+% PDF Properties
+\usepackage[pdftitle={Resumo da ITIL},
+            pdfauthor={José Lopes Oliveira Jr.},
+            pdfsubject={Resumo das características da ITIL},
+            pdfkeywords={itil, it, itg}]{hyperref}
+
+% Document Properties
+\title{ITIL\textsuperscript{\textregistered}v3: Resumo}
+\author{José Lopes Oliveira Jr.}
+
+% Acronym List
+\usepackage[notintoc,portuguese]{nomencl}
+\makenomenclature
+
+
+%%
+% MAIN
+%
+\begin{document}
+    \include{metacontent}
+
+    % Include chapters
+    \include{chapters/intro}
+    \include{chapters/funda}
+    \include{chapters/strat}
+    \include{chapters/desig}
+    \include{chapters/trans}
+    \include{chapters/opera}
+    \include{chapters/enhan}
+\end{document}

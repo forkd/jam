@@ -1,0 +1,157 @@
+Virtual Private Network (VPN) é a utilização de uma rede de comunicações de forma privada. Através da criptografia cria-se uma espécie de túnel seguro por onde trafegam as informações. Em resumo, é a utilização de um meio inseguro no transporte seguro de informações.
+
+Pode ligar duas redes, um computador a uma rede ou dois computadores.
+
+VPN é uma ferramenta de segurança e pode ser aplicada a um conjunto de boas práticas, como descrito nas ISOs 17799 e 27001.
+
+Conceitos
+
+Túnel: consiste em encapsular um protocolo dentro de outro. No caso das VPNs atuais, este encapsulamento inclui a criptografia.
+Protocolos: na camada 2 (enlace) há o Point-to-Point Tunneling Protocol (PPTP) da Microsoft, o Layer 2 Tunneling Protocol (L2TP) da IETF e o Layer 2 Forwarding (L2F) da Cisco. Na camada 3 (rede), há o IP Security Tunnel Mode (IPSec) da IETF, que foi desenvolvido com suporte ao IPv6 e muitos profissionais o consideram o padrão do futuro.
+
+OpenVPN: software livre, multiplataforma. Cria VPNs tipo SSL (VPN SSL), com o OpenSSL. Não é compatível com o IPSec e opera com a arquitetura cliente-servidor. Trabalha de preferência com o protocolo UDP, com portas acima de 5000. Utiliza duas interfaces de conexão: na camada 3, a TUN e na camada 2, a TAP.
+
+No Linux, o kernel deve ter sido compilado com suporte a dispositivos TUN/TAP e a biblitoteca de compressão LZO pode estar presente no sistema.
+
+Configuração
+
+Em ambos (servidor e cliente), recomenda-se criar o diretório /etc/openvpn para concentrar os arquivos de configuração. No servidor, dentro deste diretório, criar a chave de criptografia:
+
+# openvpn --genkey --secret server-client.asc
+
+Será criado o arquivo server-client.asc, que deverá ser copiado para o cliente. Ainda no servidor, criar o arquivo server.conf:
+
+proto udp
+dev tun
+ifconfig <ip-gw-vpn-server> <ip-gw-vpn-client>
+secret /etc/openvpn/server-client.asc
+port 5900
+
+No cliente este arquivo ficará:
+
+proto udp
+remote <ip-real-server>
+dev tun
+ifconfig <ip-gw-vpn-client> <ip-gw-vpn-server>
+secret /etc/openvpn/server-client.asc
+port 5900
+
+Executar o OpenVPN em cada máquina:
+
+# openvpn --config /etc/openvpn/server.conf &
+# openvpn --config /etc/openvpn/client.conf &
+
+Com isso surgirá a nova NIC, tun0. Para testar a conexão, basta "pingar" nos endereços dados ao gateway da VPN, no servidor e no cliente. Agora configure as rotas no servidor e no cliente:
+
+# route add -net <subnet-server> netmask <mask> gw <ip-gw-vpn-client>
+
+# route add -net <subnet-client> netmask <mask> gw <ip-gw-vpn-server>
+
+Liberar acesso no firewall:
+
+# iptables -t nat -A POSTROUTING -o tun+ -j MASQUERADE
+# iptables -A FORWARD -i tun+ -s <subnet-server>/<mask> -d <subnet-client>/<mask> -j ACCEPT
+
+# iptables -t nat -A POSTROUTING -o tun+ -j MASQUERADE
+# iptables -A FORWARD -i tun+ -s <subnet-client>/<mask> -d <subnet-server>/<mask> -j ACCEPT
+
+---
+
+O OpenVPN pode trabalhar com nenhuma criptografia (sem sentido para a maioria dos casos), criptografia com chaves estáticas (mostrado) e em modo Transport Layer Security (TLS) com chaves dinâmicas. O TLS é considerado o sucessor do Secure Sockets Layer (SSL) e permite a implementação disso.
+
+Para implementar, primeiro deve-se configurar o arquivo /etc/openssl/openssl.cnf. Na opção dir, indicar /etc/openvpn. Na opção default_days, indicar por quantos dias a chave será válida. Em /etc/openvpn, criar os arquivos index.txt (vazio) e serial, com o valor 01.
+
+Dentro de /etc/openvpn, criar a autoridade certificadora (CA):
+
+# openssl req -nodes -new -x509 -keyout ca.asc -out ca.crt
+
+Gerar a chave Diffie-Hellman:
+
+# dhparam -out dh.pem
+
+Gerar o pedido de certificado do servidor:
+
+# openssl req -nodes -new -keyout server.asc -out server.csr
+
+Assinar o pedido:
+
+# openssl ca -out server.crt -in server.csr
+
+Pode-se descartar o arquivo do pedido (server.csr), ficando com:
+
+ca.crt - CA
+dh.pem - Diffie-Hellman
+server.crt - chave privada do servidor
+server.asc - chave pública do servidor
+
+Com isso o /etc/openvpn/server.conf ficaria:
+
+dev tun
+proto udp
+ifconfig <ip-gw-vpn-server> <ip-gw-vpn-client>
+tls-server
+dh /etc/openvpn/dh.pem
+ca /etc/openvpn/ca.crt
+cert /etc/openvpn/server.crt
+key /etc/openvpn/server.asc
+up /etc/openvpn/server-up.sh  # shell script executado na inicialização da VPN
+down /etc/openvpn/server-down.sh  # shell script executado na finalização da VPN
+port 5900
+verb 3
+
+Feito isso, deve-se executar o OpenVPN no servidor. Dica: a opção --daemon executa o software como um serviço.
+
+Ainda no servidor, criar as chaves para o cliente:
+
+# openssl req -nodes -new -keyout client.asc -out client.csr
+# openssl ca -out client.crt -in client.csr
+
+Copiar os arquivos client.asc, client.crt, dh.pem e ca.crt para o cliente. Depois configurar o /etc/openvpn/client.conf:
+
+proto udp
+remote <ip-real-server>
+dev tun
+tls-client
+ifconfig <ip-gw-vpn-client> <ip-gw-vpn-server>
+ca /etc/openvpn/ca.crt
+cert /etc/openvpn/client.crt
+key /etc/openvpn/client.asc
+up /etc/openvpn/client-up.sh
+down /etc/openvpn/client-down.sh
+port 5900
+verb 3
+
+Caso não se tenha um endereço IP real fixo para o servidor, e.g., Velox, pode-se usar um serviço de DNS dinâmico para tal e indicar o domínio no parâmetro remote.
+
+Todos os parâmetros passados no arquivo de configuração são acessíveis via linha de comando, mas pelo arquivo é mais legível e elegante.
+
+No arquivo de configuração pode-se determinar a rota da VPN com:
+
+route <ip-server|client> netmask <mask>
+route-gateway <ip-gw>
+
+Para utilizar um ambiente mais seguro pode-se abrir mão do chroot.
+
+1. Criar o /var/empty se ele não existir e passar sua propriedade para nobody.nogroup:
+# mkdir /var/empty && chown -R nobody.nogroup /var/empty
+
+2. Configurar o servidor:
+
+proto udp
+dev tun
+ifconfig <ip-gw-vpn-server> <ip-gw-vpn-client>
+route <subnet-client> netmask <mask>
+route-gateway <ip-gw-vpn-client>
+secret /etc/openvpn/server.asc
+port 5900
+comp-lzo
+tun-mtu 1500
+fragment 1300
+mssfix
+ping 15
+ping-restart 60
+resolv-entry 3600
+persist-key  # permite usar o daemon com usuários sem privilégios
+user nobody
+group nogroup
+chroot /var/empty

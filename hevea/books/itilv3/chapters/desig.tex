@@ -1,0 +1,228 @@
+% Hevea - ITILv3 Resumo
+% An ITILv3 overview.
+%
+% Author: José Lopes de Oliveira Jr. <jilo.cc>
+%
+% LICENSE
+% This program is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%%
+
+
+\chapter{Desenho de Serviço}
+\label{cha:design}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{img/peony}\\
+    {\scriptsize Peony --- X-Ray Arts}
+\end{figure}
+
+É o desenho de serviços de TI apropriados e invadores, incluindo suas
+arquiteturas, processos, políticas e documentações, para suprir requisitos de
+negócio atuais e futuros. Desenha serviços que são desenvolvidos dentro de uma
+escala de tempo e custo, respeitando os ANSs.
+
+
+\section{Conceitos}
+\label{sec:design:conc}
+\begin{itemize}
+    \item Provedor de Serviço: é a entidade responsável pela entrega de um
+        serviço aos clientes e negócio.
+    \item Fornecedor: são os prestadores de serviço externos.
+    \item ANS: o Acordo de Nível de Serviço descreve os serviços de TI que o
+        provedor deve entregar e os níveis de serviço requeridos. Horário de
+        atendimento, tempo de resposta e percentual de disponibilidade são
+        algumas da metas que podem ser estabelecidas.
+    \item ANO: para que o provedor de serviço consiga cumprir as metas
+        estabelecidas nos ANS com o cliente, é necessário que ele estabeleça
+        metas internas com suas equipes técnicas. Estas metas internas são
+        chamadas de Acordo de Nível Operacional.
+    \item Contrato: é relevante que todos os serviços entregues por terceiros
+        estejam baseados em um contrato ---também conhecido como Contrato de
+        Apoio---, pois ele tem um valor legal entre as partes. Os acordos não
+        têm valor legal, são apenas documentos que homologam as metas entre as
+        partes.
+    \item Pacote de Desenho de Serviço: é uma documentação do projeto para cada
+        novo serviço, mudança de grande impacto, remoção de um serviço ou
+        mudança em um Pacote de Desenho de Serviço.
+    \item Disponibilidade: é a proporção de tempo que um cliente está
+        habilitado a acessar, quando requerido, um serviço específico ou a
+        habilidade de executar uma função acordada. É mensurada a partir do
+        ponto de vista do cliente e registrada no ANS. O tempo/percentual da
+        disponibilidade de um serviço deve ser compatível com o tempo de
+        serviço acordado.
+\end{itemize}
+\nomenclature{ANO}{Acordo de Nível Operacional}
+
+
+\section{Os 4 Ps}
+\label{sec:design:4ps}
+\begin{itemize}
+    \item Pessoas: é importante determinar os papéis das pessoas nos processos.
+    \item Processos: devem ser bem definidos.
+    \item Produtos: precisam ser determinados, inclusive serviços.
+    \item Parceiros: devem ser estabelecidos
+\end{itemize}
+
+Os 4 Ps se interrelacionam e representam as competências necessárias que o
+provedor de serviços deve ter.
+
+
+\section{Algumas Opções de Fornecimento de Serviço}
+\label{sec:design:ofs}
+\begin{itemize}
+    \item Insourcing: utiliza recursos internos à organização.
+    \item Outsourcing: utiliza recursos externos à organização.
+    \item Co-sourcing: combina in e outsourcing.
+    \item Multi-sourcing: arranjo para organizações trabalharem em conjunto, as
+        atividades são distribuídas por vários fornecedores.
+\end{itemize}
+
+
+\section{Processos}
+\label{sec:design:processos}
+\subsection{Gerenciamento de Nível de Serviço}
+É responsável por garantir entendimento entre as necessidades dos clientes e o
+que o provedor de TI deve entregar. Estabelecer acordos ---ANSs--- é uma forma
+de gerenciar a expectativa do cliente, pois ele saberá o que poderá exigir do
+provedor, que se beneficiará por passar a ter um claro entendimento do que deve
+entregar.
+
+Gerente de Nível de Serviço é o papel descrito neste processo e suas atividades
+incluem, dentre outras, garantir que as metas de níveis de serviço estão
+alinhadas com os ANSs, revisar acordos internos e externos e analisar a
+satisfação do cliente.
+
+
+\subsection{Gerenciamento do Catálogo de Serviço}
+Proporciona um único local de informações consistentes sobre todos os serviços
+acordados e assegura que o catálogo esteja disponível para quem tem autorização
+de acessá-lo. O Catálogo de Serviço está inserido dentro do Portfolio de
+Serviço, entretanto, este documento é bem mais estruturado e tem informações
+detalhadas dos serviços.
+
+O Gerente de Catálogo de Serviço é responsável por produzir e manter o
+catálogo.
+
+
+\subsection{Gerenciamento de Disponibilidade}
+Tem como meta assegurar que os serviços sejam entregues dentro dos níveis
+acordados. É completado por 2 níveis relacionados:
+\begin{enumerate}
+    \item Disponibilidade do Serviço, que envolve todos os aspectos da
+        disponibilidade de um serviço; e
+    \item Disponibilidade do Componente, que envolve aspectos da
+        disponibilidade de um componente do serviço.
+\end{enumerate}
+
+A disponibilidade é envolvida por 4 aspectos:
+
+\begin{itemize}
+    \item Disponibilidade: habilidade de um serviço, componente ou item de
+        configuração executar a função acordada quando requerida;
+    \item Confiabilidade: medida de quanto tempo um serviço, componente ou item
+        de configuração pode executar a função acordada sem interrupção;
+    \item Sustentabilidade: rapidez que um serviço, componente ou item de
+        configuração consegue ser restaurado para seu estado normal após uma
+        falha; e
+    \item Funcionalidade: habilidade de um fornecedor externo em atender os
+        termos de seu contrato.
+\end{itemize}
+
+O Gerente de Disponibilidade garante que todos os novos serviços são desenhados
+para entregar o nível de disponibilidade requerido pelo negócio, dentre outras
+funções.
+
+
+\subsection{Gerenciamento da Segurança da Informação}
+Visa controlar a provisão de informações e evitar seu uso não autorizado. Seus
+objetivos são compostos por:
+\begin{itemize}
+    \item Confidencialidade: o acesso à informação será feito de forma correta;
+    \item Integridade: a informação será completa e precisa;
+    \item Disponibilidade: a informação estará disponível quando requerida; e
+    \item Autenticidade: as trocas de informação entre a organização e seus
+        parceiros será confiável.
+\end{itemize}
+
+Controles de segurança precisam ser estabelecidos para atender aos requisitos
+de entidades externas, como Banco Central e Sarbanes Oxley (SOX). A Política de
+Segurança da Informação é o resultado deste processo.
+
+Este documento estabelece um conjunto de controles que atendem os objetivos
+internos à organização e regulamentos e leis externas. O Gerenciamento da
+Segurança da Informação é baseado na ISO/IEC 27001 que estabelece as seguintes
+etapas: Controlar, Planejar, Implantar, Avaliar e Manter.
+
+O Gerente de Segurança é quem desenvolve e publica a Política de Segurança da
+Informação na organização e garante que ela está sendo usada.
+
+
+\subsection{Gerenciamento de Fornecedor}
+Assegura que os fornecedores e os seus serviços são gerenciados para suportar
+as metas dos serviços de TI e os ANSs. Assegura que contratos e acordos com
+fornecedores estejam alinhados com as necessidades do negócio e com as metas
+dos ANSs e ANOs, em conjunto com o Gerenciamento do Nível de Serviço.
+
+O Banco de Dados de Contratos é um repositório central onde ficam os cadastros
+de todos os fornecedores e os contratos relacionados. Dessa forma, os
+fornecedores podem ser classificados conforme sua avaliação de risco e impacto:
+\begin{itemize}
+    \item Estratégicos: envolvem troca de informação confidencial;
+    \item Táticos: envolvem atividades comerciais significativas;
+    \item Operacionais: fornecem serviços ou produtos de operação; e
+    \item Commodity: fornecedores de papel, tinta etc.
+\end{itemize}
+
+Cada fornecedor precisa de um tratamento diferenciado conforme sua importância.
+
+Neste processo é definido o papel de Gerente de Fornecedor, que será
+responsável por todas as tarefas descritas, catalogando, mantendo, avaliando,
+comunicando e negociando contratos com fornecedores.
+
+
+\subsection{Gerenciamento de Capacidade}
+Assegura que a capacidade da infraestrutura de TI esteja alinhada com as
+necessidades do negócio. Entende e mantém os níveis de entrega de serviços
+resquisitados a um custo aceitável. Está continuamente tentando alcançar a
+combinação de custo efetivo com os recursos de TI. É divido em 3 subprocessos:
+\begin{itemize}
+    \item Gerenciamento da Capacidade do Negócio: focado no longo prazo,
+        assegura que os requisitos do negócio sejam levados em consideração;
+    \item Gerenciamento da Capacidade de Serviço: assegura que a performance
+        dos serviços estejam de acordo com os ANSs; e
+    \item Gerenciamento da Capacidade de Componente: mais detalhado e técnico,
+        otimiza a utilização dos recursos de hardware e software.
+\end{itemize}
+
+O Gerente de Capacidade atua com ponto focal para questões de capacidade e
+desempenho, incluindo relatórios de gerenciamento sobre uso, tendências e
+previsões.
+
+
+\subsection{Gerenciamento da Continuidade do Serviço}
+Prepara o provedor de serviço para a pior situação possível. Faz parte de um
+processo maior, que não é de TI, mas sim da organização como um todo: o
+Gerenciamento da Continuidade do Negócio.
+
+Diferentemente do Gerenciamento da Disponibilidade, que foca em obter a melhor
+disponibilidade possível para os serviços de TI em operação, o Gerenciamento da
+Continuidade do Serviço foca em elaborar um plano de continuidade com
+estratégias de recuperação para desastres.
+
+O Gerente de Continuidade do Serviço criará e manterá o processo, assegurando
+que ele esteja de acordo com o Gerenciamento de Continuidade do Negócio.
+Realizará testes e ajudará na execução da análise de impacto do negócio para
+todos os serviços.

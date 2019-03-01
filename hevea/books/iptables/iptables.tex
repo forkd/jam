@@ -1,0 +1,349 @@
+Firewall: qualquer mecanismo que impeça o acesso baseado em certas regras de controle.
+
+Tipos
+
+Quanto à Atuação
+Filtros de Aplicação - trabalham na camada de aplicação do modelo OSI. Tem conhecimento para analisar não apenas cabeçalhos, mas o conteúdo do pacote.
+Filtros de Pacotes - trabalham tipicamente nas camadas de transporte e rede do modelo OSI. Trabalhar no nível de rede significa que o filtro pode analizar endereços IP e trabalhar no nível de transporte significa poder identificar portas.
+
+Quanto à Abrangência
+Filtro de Host - Trabalha apenas no host. Tem menos trabalho por proteger apenas o host e ser bem específico. Por isso pode fazer filtragens mais robustas.
+Filtro de Rede - Trabalha na proteção de uma rede inteira. Tem de ser genérico e normalmente possui muitas regras. Isso pode gerar um gargalo na rede.
+
+Quanto ao Poder
+stateless - Estático. Toma decisões baseando-se apenas no pacote atual. Não consegue lembrar-se, por exemplo, de quantos pacotes de determinado protocolo passaram em determinado período de tempo.
+statefull - Dinâmico. Consegue tomar decisões baseadas em decisões ou pacotes anteriores. É capaz de saber se um pacote já fez o handshake TCP ou quantos pacotes de determinado protocolo passaram em determinado período. Requerem mais recursos de hardware que os stateless.
+
+O iptables é um filtro de pacotes que pode trabalhar como filtro de aplicação (módulo string). Pode ser tanto filtro de host quanto filtro de rede e é statefull (o módulo limit pode determinar quantos pacotes passaram em um período, o módulo consegue saber se o pacote pertence a uma sessão ativa e o módulo recent armazena endereços IP de origem e pode contar quantos pacotes vieram deles).
+
+
+Necessidade: A demanda por segurança cresce na medida em que os serviços de informática são mais utilizados.
+
+Propósito: Ser o único ponto de comunicação entre duas redes, visando controle, segurança e vigilância.
+
+É PARTE de um esquema de segurança.
+
+Linux
+
+Kernel
+
+-- netfilter: Módulo do Kernel. Conjunto de chains (cadeias) divididas em tabelas, para tratamento de pacotes.
+
+Cada tabela do netfilter (Filter, NAT, Mangle) contém regras direcionadas a objetivos básicos.
+
+Filter: Filtragem de pacotes. Deve conter apenas regras que indiquem a aceitação ou não de um pacote.
+NAT: Manipulação de rotas. Realiza traduções sobre endereços IP ou portas de origem ou destino.
+Mangle: Funções mais complexas. Realiza alterações mais profundas nos pacotes, como nos campos TOS e TTL.
+
+A tabela Filter possui as chains:
+
+INPUT: pacotes que entram no host
+FORWARD: pacotes que serão redirecionados pelo host
+OUTPUT: pacotes que saem do host
+
+A tabela filter pode usar os seguintes alvos: REJECT, DROP, ACCEPT e LOG.
+
+A tabela NAT (Network Address Translation) possui:
+
+PREROUTING: trata pacotes antes de serem roteados
+OUTPUT: trata pacotes emitidos que saem do host (firewall)
+POSTROUTING: trata pacotes após o roteamento
+
+A tabela Mangle implementa alterações especiais em um nível mais complexo.
+
+PREROUTING: trata pacotes antes de serem roteados
+OUTPUT: trata pacotes locais
+
+O iptables é a ferramenta que serve de frontend para o netfilter. Com ele pode-se alterar vários aspectos de cada chain. Ele foi introduzido no Kernel 2.4 e está em todas as versões da série 2.6.
+
+---
+
+O iptables é composto pelos seguintes aplicativos:
+iptables: aplicativo principal para IPv4;
+ip6tables: aplicativo principal para IPv6;
+iptables-save: salva todas as regras inseridas na sessão atual em um determinado arquivo; e
+iptables-restore: restaura as regras salvas pelo iptables-save.
+
+A configuração do iptables não é feita via arquivos de configuração, mas por comandos no shell. Assim, as regras são válidas apenas para a sessão atual, sendo perdidas quando o firewall for desligado ou reiniciado.
+
+Para solucionar este problema, utiliza-se o iptables-save para gravar as configurações da sessão em um arquivo e o iptables-restore para restaurá-las em uma nova sessão:
+
+# iptables-save > /etc/rc.firewall
+# iptables-restore < /etc/rc.firewall
+
+Sintaxe:
+
+# iptables [tabela] [comando] [ação] [alvo]
+
+Tabela
+São filter, nat e mangle, sendo que a filter é padrão - se a tabela for omitida, a filter será usada.
+
+Comando
+-A adiciona uma nova entrada no fim da lista de regras.
+-D apaga uma regra da lista. Pode receber um número para apagar uma regra específica.
+-L lista as regras existentes.
+-P define a política padrão.
+-F remove todas as entradas de uma tabela ou chain sem alterar a política padrão.
+-I insere uma regra no início da lista.
+-R substitui uma regra por outra.
+-N cria uma nova chain na tabela especificada. O nome da nova chain deverá ter até 31 caracteres e conter apenas letras maiúsculas ou minúsculas.
+-E renomeia uma chain anteriormente criada.
+-X apaga uma chain anteriormente criada.
+
+Ação
+-p especifica o protocolo ao qual a regra se aplica. Pode ser um valor numérico especificado no arquivo /etc/protocol ou o próprio nome do protocolo.
+-i especifica a interface de entrada a ser utilizada. Refere-se apenas às chains INPUT e FORWARD. Pode-se ainda especificar todas as entradas com -i eth+, por exemplo.
+-o especifica a interface de saída a ser utilizada e é aplicado como -i.
+-s especifica a origem do pacote ao qual a regra deve ser aplicada. Por ser um host, uma rede ou uma URL - depende de um servidor DNS para este último.
+-d o destino do pacote e é utilizado como -s.
+! negação. Utilizado com -s, -d, -p, -i, -o etc.
+-j define o alvo do pacote, caso ele se encaixe em alguma regra.
+--sport torna possível aplicar filtros com base na origem do pacote. Só pode ser usado com TCP ou UDP.
+--dport funciona de forma similar a --sport, mas diz respeito à porta de destino.
+
+Alvo
+ACCEPT permite a entrada/passagem do pacote.
+DROP descarta um pacote sem informar o que houve ao emissor (pelo ping, dá a entender que o host está offline).
+REJECT rejeita um pacote e informa ao emissor.
+LOG cria uma mensagem de log no arquivo /var/log/messages sobre a utilização dos outros alvos - por isso deve ser usado antes deles.
+RETURN retorna ao processamento da chain anterior sem processar o resto da atual.
+QUEUE encarrega um programa de nível de usuário de administrar o processamento do fluxo atribuído.
+SNAT altera o endereço de origem das máquinas clientes antes dos pacotes serem roteados.
+DNAT altera o endereço de destino dos clientes.
+REDIRECT realiza o redirecionamento de portas em conjunto com a opção --to-port.
+TOS prioriza a entrada/saída de pacotes baseado no campo TOS do cabeçalho IPv4.
+
+Dicas
+
+Para listar regras de cada tabela:
+# iptables -t [filter|nat|mangle] -L
+
+Alterar a política padrão das chains de filter para DROP:
+# iptables -P [INPUT|FORWARD|OUTPUT] DROP
+
+Liberar totalmente o tráfego de entrada para a interface de loopback - obrigatório.
+# iptables -A INPUT -i lo ACCEPT
+
+Evitar que um pacote oriundo da LAN 10.0.30.0 possa direcionar-se a sexo.com.br:
+# iptables -A FORWARD -s 10.0.30.0/8 -d sexo.com.br -j DROP
+
+Qualquer pacote oriundo de cracker.com não pode entrar na LAN:
+# iptables -A FORWARD -s cracker.com -d 10.0.30.0/8 -j DROP
+
+Os pacotes de joselop.es devem entrar livremente na rede:
+# iptables -A FORWARD -s joselop.es -d 10.0.30.0/8 -j ACCEPT
+
+Todos os pacotes entrantes por eth2 serão redirecionados para 10.0.30.47:
+# iptables -t nat -A PREROUTING -i eth2 -j DNAT -to 10.0.30.47/8
+
+Qualquer pacote que sair da rede terá a origem alterada para 192.168.0.33:
+# iptables -t nat -A POSTROUTING -o eth2 -j SNAT -to 192,168.0.33
+
+Rejeitar pacotes entrantes por eth1:
+# iptables -A FORWARD -i eth1 -j REJECT
+
+Descartar pacotes de quaisquer interfaces, exceto eth0:
+# iptables -A FORWARD -i ! eth0 -j DROP
+
+Apagar a segunda regra inserida na chain FORWARD:
+# iptables -D FORWARD 2
+
+Listar regras da chain OUTPUT:
+# iptables -L OUTPUT
+
+Descartar qualquer pacote de 10.0.80.32 para 10.0.30.4:
+# iptables -A FORWARD -s 10.0.80.32/8 -d 10.0.30.4/8 -j DROP
+
+Descartar pacotes TCP destinados à porta 80 do firewall:
+# iptables -A INPUT -p tcp --dport 80 -j DROP
+
+Arquivar em log pacotes destinados à porta 25 do firewall:
+# iptables -A INPUT -p tcp --dport 25 -j LOG
+
+Pode-se ainda descartar o pacote com:
+# iptables -A INPUT -p tcp --dport 25 -j DROP
+
+---
+
+PREROUTING - pacotes que acabaram de chegar na NIC, não importando para onde irão. Se um pacote precisa ter algum parâmetro de destino modificado, isso deve ser feito antes do roteamento. Por isso essa chain é usada para realizar o DNAT (Destination Network Address Translate). Aqui só é permitido o parâmetro -i. Aceita os targets LOG, DROP e REDIRECT (este último é igual a DNAT --to $IP_FIREWALL:PORTA
+
+POSTROUTING - pacotes que já foram roteados, prontos para deixar o firewall. Portanto não faz sentido alterar endereços de destino aqui. Altera-se características de origem do pacote aqui, portanto o parâmetro -o pode ser empregado. Pode-se usar os targets SNAT para alterar parâmetros de origem, assim como DROP e LOG aqui.
+
+OUTPUT - pacotes gerados pelo próprio firewall e que precisam ter os parâmetros de destino alterados. As regras aqui têm os mesmos parâmetros e propósitos descritos na chain PREROUTING.
+
+SNAT - Tradução do endereçamento de origem.
+Qualquer regra aplicada a SNAT utiliza-se da chain POSTROUTING.
+Habilitar o redirecionamento de pacotes no kernel:
+# echo 1 > /proc/sys/net/ipv4/ip_forward
+
+ou
+
+# sysctl -w net.ipv4.ip_forward=1
+
+Qualquer pacote oriundo de 10.0.3.1, com saída por eth1 deverá ter o endereço de origem alterado para 192.111.22.33:
+# iptables -t nat -A POSTROUTING -s 10.0.3.1 -o eth1 -j SNAT --to 192.111.22.33
+
+Qualquer pacote com origem na rede 10.0.3.0/8, que sair por eth0 deverá ter seu endereço alterado para 192.111.22.33:
+# iptables -t nat -A POSTROUTING -s 10.0.3.0/8 -o eth0 -j SNAT --to 192.111.22.33
+
+Qualquer pacote de 10.0.3.1 com saída por eth0 terá a origem alterada para qualquer IP disponível na faixa 192.111.22.33 a 192.111.22.66:
+# iptables -t nat -A POSTROUTING -s 10.0.3.1 -o eth0 -j SNAT --to 192.111.22.33-192.111.22.66
+
+DNAT - Tradução do endereço de destino.
+Possibilita alterar endereços/portas de destino antes do roteamento. Pos isso utiliza-se apenas da chain PREROUTING.
+É quem possibilita o desenvolvimento de proxys transparentes.
+Também é necessário habilitar o IP Forwarding no kernel.
+
+Alterar o endereço de destino dos pacotes oriundos de 10.0.3.1 com entrada por eth1, para 192.111.22.33:
+# iptables -t nat -A PREROUTING -s 10.0.3.1 -i eth1 -j DNAT --to 192.111.22.33
+
+Todo pacote que entrar por eth0 deverá ser redirecionado para 192.111.22.33 a 192.111.22.66 (todos os hosts no intervalo):
+# iptables -t nat -A PREROUTING -i eth0 -j DNAT --to 192.111.22.33-192.111.22.66
+
+Todo pacote entrante por eth2 deve ter o endereço alterado para 192.111.22.33 e a porta será sempre a 22:
+# iptables -t nat -A PREROUTING -i eth2 -j DNAT --to 192.111.22.33:22
+
+Proxy Transparente: redirecionamento de portas em um mesmo host de destino. Obtido pela tabela nat com as chains PREROUTING e OUTPUT e o alvo REDIRECT. [Proxy transparente não é sinônimo de DNAT!]
+
+Todo pacote entrante por eth0, usando o protocolo TCP, encaminhado à porta 80, deve ser redirecionado à porta 3128 do mesmo host:
+# iptables -t nat -A PREROUTING -i eth0 -p TCP --dport 80 -j DNAT --to-port 3128
+
+---
+
+Priorização de pacotes - aspecto da QoS obtido por meio de TOS, do cabeçalho IPv4.
+O ToS pode ser aplicado por meio de regras na tabela mangle. TOS é mais um alvo que combinado com o argumento --set-tos permite aplicação de conceitos de gerenciamento de tráfego por ToS. Os valores que o campo TOS pode assumir são:
+
+16 (0x10) Minimize-Delay
+8 (0x08) Maximize-Throughput
+4 (0x04) Maximize-Reliability
+2 (0x02) Minimize-Cost
+0 (0x00) Normal-Service (padrão)
+
+Saída
+
+Aplicando prioridade máxima (espera mínima) para o tráfego de saída em eth0 em pacotes do protocolo SSH:
+# iptables -t mangle -A OUTPUT -o eth0 -p tcp --dport 22 -j TOS --set-tos 16
+
+Entrada
+
+Aqui utiliza-se a chain PREROUTING e a opção -i. Para um exemplo similar ao anterior, mas para entrada, seria:
+# iptables -t mangle -A PREROUTING -i eth0 -p tcp --sport 22 -j TOS --set-tos 16
+
+Dando prioridade máxima de processamento a pacotes entrantes do protocolo FTP:
+# iptables -t mangle -A PREROUTING -i eth0 -p tcp --sport 20 -j TOS --set-tos 8
+
+Máxima confiança a pacotes HTTP entrantes:
+# iptables -t mangle -A PREROUTING -i eth0 -p tcp --sport 80 -j TOS --set-tos 4
+
+---
+
+Módulos: objetivo de extender as funções do iptables.
+
+Sintaxe: -m [módulo] ou --match [módulo]
+
+limit: regras neste módulo especificam exatamente quantas vezes as mesmas devem ser executadas em um intervalo de tempo específico. Se isso ocorrer, ela executa automaticamente a regra seguinte. Eficaz contra o Ping da Morte e SYN-flood, por exemplo
+
+Ping da morte - o atacante envia o máximo de requisições ICMP em um curto espaço de tempo. É um tipo de ataque DoS. Com o limit, o firewall pode aceitar pacotes ICMP, mas se eles forem enviados em um curto intervalo de tempo, definido pelo administrador, por exemplo, 1 segundo, a próxima regra será executada e obviamente deverá bloquear pacotes ICMP:
+
+# iptables -A INPUT -p icmp --icmp-type echo-request -m limit --limit 1/s -j ACCEPT
+
+Pacotes ICMP são aceitos somente se recebidos em intervalos de 1 segundo. Se quebrarem isso, a próxima regra será executada:
+
+# iptables -A INPUT -p icmp -j DROP
+
+SYN-flood - o protocolo TCP é orientado à conexão e para isso executa várias checagens para garantir maior confiabilidade no envio de pacotes. Um dos recursos para isso são as flags que orientam a inicialização:
+
+PSH (PuSH) Informa ao TCP que ele deve enviar todos os pacotes que estejam no buffer ao destinatário.
+URG (URGent) Indica que os pacotes terão prioridade no envio.
+SYN (SYNchronize) Sincroniza os números sequenciais.
+ACK (ACKnowledgement) Informa ao receptor o próximo número da sequência que o emissor deseja receber.
+FIN (FINalize) Indica a finalização da conexão.
+
+Para estabelecer uma conexão, o TCP realiza o Three-way Handshake: tome o host A querendo estabelecer conexão com o host B. A envia um pacote SYN solicitando a sincronização dos hosts. Após receber o pacote SYN, B retornará um pacote SYN+ACK ao host A. Isso significa que o host B aceitará a conexão à princípio e aguarda o número da sequência da comunicação. Ao receber o pacote SYN+ACK, o host A retorna ao host B a sequência da conexão em um pacote ACK. Neste momento a conexão estará estabelecida.
+
+No exemplo, se o host A for um atacante de SYN-flood, ele enviará um pacote SYN para o host B. Este responderá com um SYN+ACK e aguardará um ACK para concluir o handshake. Neste momento, a conexão estará em half-connection. Milhares de half-connections são um SYN-flood. O host A consegue isso, por exemplo, com um IP Spoofing (falsificação do IP de origem). Assim, a resposta de B (SYN+ACK) seria para um host inexistente ou que não solicitou a conexão e por isso irá descartá-la. B ficará com a tabela TCB cheia e no estado SYN-RCVD, aguardando as respostas ACK. Isso leva B começar a recusar pacotes legítimos, o que caracteriza negação de serviço.
+
+Ataques SYN-flood podem ser evitados com o iptables, mas antes disso os SYN-cookies (uma técnica menos eficaz de proteção) devem ser desativados (válido apenas durante a sessão):
+
+# echo 0 > /proc/sys/net/ipv4/tcp_syncookies
+
+# iptables -N SYNFLOOD
+# iptables -A INPUT -i eth0 -p tcp --syn -j SYNFLOOD
+# iptables -A SYNFLOOD -m limit --limit 1/s --limit-burst 4 -j RETURN
+# iptables -A SYNFLOOD -j DROP
+
+Evita ataques de IP Spoofing a partir da LAN.
+# iptables -A FORWARD -i eth0 -s ! 192.168.1.0/24 -j REJECT
+
+* para proteger o firewall de ataques IP Spoofing:
+
+for i in /proc/sys/net/ipv4/conf/*/rp_filter; do
+    echo 1 > $i
+done
+
+Com o limit pode-se conter escaneamentos ocultos ao firewall:
+
+# iptables -A FORWARD -p tcp --tcp-flags SYN,ACK,FIN,RST RST -m limit --limit 1/s -j ACCEPT
+
+Os intervalos de tempo podem ser especificados como (s)egundo, (m)inuto, (h)ora e (d)ia.
+
+state: atribui regras de acordo com o estado da conexão de um pacote. Os estados podem ser:
+
+NEW o pacote está criando uma nova conexão.
+ESTABLISHED o pacote pertence a uma conexão já existente.
+RELATED o pacote se relaciona indiretamente com outro pacote, como mensagens de erro de conexão.
+INVALID o pacote não foi identificado por algum motivo desconhecido (execução fora da memória, erros de ICMP diferentes de 8 etc.). Aconselha-se descartar (DROP) tais pacotes.
+
+* para usar mais de um estado/regra, eles devem ser separados por vírgula.
+
+Permitir qualquer nova conexão que parta de eth0:
+# iptables -A INPUT -m state --state NEW -i eth0 -j ACCEPT
+
+Bloquear qualquer pacote cujo estado de conexão seja inválido:
+# iptables -A INPUT -i eth0 -m state --state INVALID,RELATED -j DROP
+
+Aceitar qualquer pacote sob os estados ESTABLISHED e RELATED:
+# iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+mac: permite que o firewall atue no nível de enlace, avaliando endereços MAC em vez de endereços IP.
+
+Bloquear qualquer pacote oriundo de 40:F0:B2:8F:00:01:
+# iptables -A INPUT -m mac --mac-source 40:F0:B2:8F:00:01 -j DROP
+
+multiport: permite a especificação de até 15 portas a um alvo. Pode ser usado com portas de origem e destino ao mesmo tempo com o parâmetro --port.
+
+Descartar qualquer pacote que entre por eth0, destinado às portas 25, 53, 80 e 110:
+# iptables -A INPUT -i eth0 -p tcp -m multiport --dport 25,53,80,110 -j DROP
+
+string: pode substituir com grande ganho em desempenho um proxy em alguns casos. Exemplo: a empresa não precisa de um proxy, usa NAT para compartilhar o link com a Internet e surgiu uma pequena necessidade específica de proxy.
+
+Proibir a entrada de pacotes com a palavra sexo em seu corpo:
+# iptables -A INPUT -m string --string "sexo" -j DROP
+
+Gravar em log e bloquear:
+# iptables -A INPUT -m string --string "sexo" -j LOG --log-prefix "Site de Sexo"
+# iptables -A INPUT -m string --string "sexo" -j DROP
+
+É importante ressaltar que o módulo string possui um processamento mais lento e por isso deve ser utilizado com moderação, pois pode acarretar em lentidão no acesso à Internet.
+
+owner: é capaz de determinar com precisão informações sobre o criador de um pacote, tornando possível identificar o emissor real do pacote em nível de usuário. É utilizado apenas com a chain OUTPUT.
+
+Algumas opções do módulo são:
+
+--uid-owner define um id de usuário.
+--gid-owner define um id de grupo de usuários.
+--pid-owner define um id de processo.
+--sid-owner define um id de sessão (grupo de processos).
+
+Bloquear a saída de qualquer pacote UDP que seja criado por um usuário do grupo 81:
+# iptables -A OUTPUT -p udp -m owner --gid-owner 81 -j DROP
+
+Permitir apenas que o usuário de id 42 envie pacotes para fora da rede sob o protocolo TCP:
+# iptables -A OUTPUT -p tcp -m owner --uid-owner 42 -j ACCEPT
+# iptables -A OUTPUT -p tcp -j DROP
+
+Permitir apenas aos usuários do grupo de id 50 acessarem sexo.com.br:
+# iptables -A OUTPUT -d sexo.com.br -m owner --gid-owner 50 -j ACCEPT
+# iptables -A OUTPUT -d sexo.com.br -j DROP
+
+http://www.vivaolinux.com.br:443/artigo/Mecanismo-de-firewall-e-seus-conceitos/

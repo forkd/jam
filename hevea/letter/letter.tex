@@ -1,0 +1,101 @@
+% Hevea - Letter
+% Template for a letter.
+%
+% Author: José Lopes de Oliveira Jr. <jilo.cc>
+%
+% LICENSE
+% This program is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%%
+
+
+%%
+% PREAMBLE
+%
+\documentclass[a4paper,obeyspaces]{letter}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{hyperref}
+\usepackage{graphicx}  % to include pictures
+\usepackage{url}  % to include URLs
+
+
+%%
+% SENDER
+%
+\signature{John Doe}
+\address{John Doe.\\ Jiló Inc.\\ Lorem Ipsum, Dolor\\ Belo Horizonte, MG}
+
+
+%%
+% RECEIVER
+%
+\begin{document}
+\begin{letter}{John Smith\\ Jiló Inc.\\ Sit Amet, Consectetur \\ Belo Horizonte, MG}
+
+
+%%
+% CONTENT
+%
+\opening{Dear Mr. Smith,}
+
+Adipiscing elit. Nunc semper malesuada tincidunt. Proin sit amet nisl vel 
+libero varius placerat eget et diam. In eleifend, mauris ut placerat bibendum, 
+nisi tortor pulvinar leo, eu placerat eros nisl ac tellus. Etiam imperdiet 
+nulla ut nulla sagittis, \textbf{ut volutpat dolor} feugiat. Phasellus augue 
+nibh, luctus eu lacinia ac, tristique vitae lorem. Integer ornare sem purus, 
+id vehicula risus facilisis vitae. Morbi mattis urna in bibendum elementum. 
+Cras vehicula nisl sapien, eu mollis metus dapibus nec. Morbi neque neque, 
+tempor vitae dui vitae, ornare sollicitudin libero. Vestibulum suscipit, nisl 
+et congue vulputate, velit leo convallis arcu, eget hendrerit dolor lorem vel 
+nisl. In tincidunt commodo quam, at faucibus augue iaculis consectetur. 
+Curabitur a consectetur arcu. Ut viverra iaculis lectus. Vivamus suscipit 
+feugiat neque, sit amet sagittis arcu aliquet et. Lorem ipsum dolor sit amet, 
+consectetur adipiscing elit.
+
+Donec egestas mauris vitae tellus iaculis convallis. Morbi fermentum magna non 
+pharetra interdum. Ut tristique felis ut fringilla tincidunt. In eget convallis 
+augue. Phasellus accumsan scelerisque dapibus. Aliquam eleifend pulvinar 
+dapibus. Maecenas nec bibendum quam. Proin in \textit{velit eu turpis accumsan 
+rutrum sit amet sit amet} enim. Sed eget lacinia est. Mauris id magna semper 
+magna iaculis semper quis quis tortor. Ut vitae tortor a massa dignissim 
+fermentum. Aliquam vulputate laoreet justo, et aliquam est dictum quis.
+
+\begin{center}
+\includegraphics[width=1\textwidth]{../img/cow-480x320.jpg}\\
+{Etiam sit amet tortor non dui.}
+\end{center}
+
+Sed feugiat risus porta est commodo, vel sollicitudin ante luctus. Aliquam et 
+nunc quis libero pulvinar ultrices. Duis malesuada velit velit, vitae porttitor 
+enim interdum vitae. Etiam eu enim turpis. Donec nisi est, vulputate non nunc 
+eu, pretium dignissim purus. Suspendisse potenti. In ac turpis justo. Aenean 
+non gravida ipsum. Etiam sed risus vitae erat suscipit molestie. Praesent 
+malesuada luctus velit viverra interdum. Proin in justo id ligula sodales 
+luctus sit amet auctor augue. Fusce sit amet volutpat tellus. Donec a odio diam.
+
+
+%%
+% ENDING
+% Additional space before the closing sentence.
+\vspace{2\parskip}
+\closing{Best Regards,}
+
+% Post Scriptum
+\vspace{2\parskip}
+\ps{\textbf{P.S.:} Aenean imperdiet tincidunt hendrerit. Praesent non semper 
+urna, gravida ultrices ante.}
+
+\end{letter}
+\end{document}

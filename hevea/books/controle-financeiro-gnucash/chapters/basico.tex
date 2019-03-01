@@ -1,0 +1,39 @@
+ass="alignright size-medium wp-image-163" title="Money Pop Art - Vangobot's Art Machine" src="http://joselop.es/app/wor/wp-content/uploads/2010/12/money_pop_art-300x225.jpg" alt="Money Pop Art - Vangobot's Art Machine" width="300" height="225" />Na primeira execução do GNUCash será mostrado um assistente para criação de nova conta.
+<ol>
+    <li>Configuração de Nova Hierarquia de Contas. É só a apresentação do programa. Clique em Avançar.</li>
+    <li>Escolha Moeda. Garanta que a opção BRL (Brazilian Real) esteja selecionada e clique em Avançar.</li>
+    <li>Escolha Contas a Criar. Nesta janela você poderá escolher os tipos de conta que o programa apresentará. Pode-se selecionar apenas as básicas (Contas Comuns) e ir adicionando outras com o tempo, como Contas de Aposentadoria, Ativo Fixo e Contas do Cônjuge. Contudo, eu prefiro adicionar tudo de uma vez, para ter mais opções de discriminação do uso do dinheiro - quanto melhor você discriminar de onde veio e para onde foi o seu dinheiro, melhor. Ao terminar a seleção, clique em Avançar.</li>
+    <li>Criar Novas Contas. Nesta janela você pode inserir os valores de partida do programa. Eu recomendo que pelo menos as opções Conta Corrente, Conta Poupança e Dinheiro na Carteira sejam preenchidas. Um erro comum neste ponto é o de lançar despesas (e.g., contas de Internet, energia e água) como se as mesmas fossem debitados automaticamente todo mês pelo programa. Evite fazer isto agora. Deixe para lançar despesas apenas quando for pagá-las. Ao terminar, clique em Avançar.</li>
+    <li>Conclusão de Configuração de Conta. Clique em Aplicar para finalizar a criação da conta e será exibida a janela principal do programa, como na figura a seguir.</li>
+</ol>
+<a rel="lightbox" href="http://joselop.es/app/wor/wp-content/uploads/2010/12/gnucash_conta_criada.jpg"><img class="aligncenter size-medium wp-image-108" title="Figura 1 - Conta Recém Criada" src="http://joselop.es/app/wor/wp-content/uploads/2010/12/gnucash_conta_criada-300x175.jpg" alt="Figura 1 - Conta Recém Criada" width="300" height="175" /></a>
+<h3>Visão Geral da Interface do GNUCash</h3>
+- Poxa, mas que janela complicada!
+
+Que nada! A interface do GNUCash pode ser distribuída em 6 sessões distintas, como mostrado na figura seguinte.
+
+<a rel="lightbox" href="http://joselop.es/app/wor/wp-content/uploads/2010/12/gnucash_visao_geral.jpg"><img class="aligncenter size-medium wp-image-109" title="Figura 2 - Visão Geral" src="http://joselop.es/app/wor/wp-content/uploads/2010/12/gnucash_visao_geral-300x175.jpg" alt="Figura 2 - Visão Geral" width="300" height="175" /></a>
+<ol>
+    <li>Barra de Menu. É através desta barra que teremos acesso à maioria das opções do programa, como Arquivo/Gravar (para salvar o nosso trabalho), Editar/Preferências (para configurar melhor o GNUCash) e Relatórios/Sumário de Conta (para gerar um relatório com os dados cadastrados).</li>
+    <li>Barra de Ferramentas. Provê acesso rápido a tarefas da aba selecionada. Por ser referente à aba, os ícones variam. Na conta principal, por exemplo, pode-se abrir, editar, criar ou excluir uma conta. Os únicos itens fixos são Gravar o arquivo atual e Fechar a página ativa atual - os dois primeiros, da esquerda para a direita do usuário.</li>
+    <li>Barra de Abas. Contém as abas (ou páginas) atualmente abertas. Pode-se navegar por elas clicando-se nas mesmas. Para fechá-las, use a opção adequada na Barra de Ferramentas.</li>
+    <li>Janela Ativa. Exibe o conteúdo da aba ativa no momento. Os nomes das colunas variam de aba para aba. No caso de relatórios, este campo nem existe.</li>
+    <li>Barra de Sumário. Contém o resumo dos dados financeiros.</li>
+    <li>Barra de Estado. Contém uma pequena descrição dos itens de menu e uma barra de progresso para operações mais demoradas.</li>
+</ol>
+<h3>Árvores de Contas</h3>
+- Não consigo achar onde está a minha Conta Corrente no programa!
+
+As contas no GNUCash são dispostas de forma hierárquica. Esta técnica serve para organizar melhor os vários tipos de contas que você possui. Por exemplo, a sua Conta Corrente e a sua Conta Poupança são ativos. Logo, elas só podem estar cadastradas dentro da conta Ativos. Se você expandir essa conta, perceberá que vão pender algumas contas dela, sendo uma chamada de Ativos Atuais. Dentro desta conta Ativos Atuais, há várias contas, sendo as principais, sua Conta Corrente, Conta Poupança e Dinheiro na Carteira.
+
+<a rel="lightbox" href="http://joselop.es/app/wor/wp-content/uploads/2010/12/gnucash_arvore_conta_receitas.jpg"><img class="alignleft size-full wp-image-110" title="Figura 3 - Árvore de Contas Descendentes da Conta Receitas" src="http://joselop.es/app/wor/wp-content/uploads/2010/12/gnucash_arvore_conta_receitas.jpg" alt="Figura 3 - Árvore de Contas Descendentes da Conta Receitas" width="256" height="207" /></a>Da mesma forma, dentro da conta Despesas, há os mais variados tipos de despesas que você pode ter. Na figura ao lado, podemos ver um exemplo da árvore de contas que pende da conta Receitas. Perceba que a conta Juros Recebidos, que se encontra dentro da conta Receitas, também é uma árvore com 3 contas dentro dela.
+
+Para indicar o caminho para uma conta que se encontra dentro de uma árvore, o GNUCash define como padrão os dois pontos (:) para separar cada conta no caminho. No caso da figura 3, caso fosse necessário definir o caminho da conta Outros Juros, a resposta seria Receitas:Juros Recebidos:Outros Juros.
+<h3>Salve seus Dados</h3>
+O GNUCash pode gerenciar várias contas para várias pessoas e/ou empresas. Contudo, para cada conta são gerados vários arquivos, o que pode confundir o usuário. Isso piora quando levamos em consideração que é recomendável fazer backup dos mesmos.
+
+- Como eu resolvo isso?
+
+Eu sugiro que você crie um diretório chamado GNUCash dentro do seu diretório pessoal de documentos. Dentro desse diretório GNUCash, crie um diretório com o nome de cada conta. Por exemplo, se você planeja controlar as suas próprias finanças, crie um diretório com o seu nome.
+
+Dentro do GNUCash, clique no ícone de salvamento na Barra de Ferramentas ou acesse Arquivo/Gravar. Isto abrirá a janela de gravação dos dados. Localize o diretório que você criou e dê um nome apropriado para o seus dados - sugiro que seja o mesmo nome do diretório recém criado. Então clique em Salvar.

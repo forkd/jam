@@ -1,0 +1,757 @@
+% Hevea - Criptografia numa Caixa de Fósforos
+% An article --pt-br-- about cryptography.
+%
+% Author: José Lopes de Oliveira Jr. <jilo.cc>
+%
+% LICENSE
+% This program is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%%
+
+
+%%
+% PREAMBLE
+%
+\documentclass[12px,a4paper,twoside]{article}
+
+%%
+% DRAFT MARK
+% Comment these lines on final version.
+%\usepackage{draftwatermark}
+%\SetWatermarkText{DRAFT}
+%\SetWatermarkScale{4}
+
+%%
+% GENERAL PACKAGES
+%
+\usepackage{graphicx}   %for including pictures
+\usepackage{fixltx2e}   %for \textsubscript{}
+\usepackage{amssymb}    %special math symbols
+
+%%
+% ENCODING & LOCALE
+%
+\usepackage[utf8]{inputenc}    %utf-8 encoding
+\usepackage[T1]{fontenc}       %extended font encoding
+\usepackage[brazilian]{babel}  %pt-BR locale
+
+%%
+% PDF PROPERTIES
+%
+\usepackage[pdftitle={Criptografia numa Caixa de Fósforos},
+            pdfauthor={José Lopes de Oliveira Jr.},
+            pdfsubject={Notas de estudo em criptografia.},
+            pdfkeywords={criptografia, segurança da informação,
+                         certificação digital, GnuPG}]{hyperref}
+
+%%
+% LISTINGS
+% To better present source-codes.
+\usepackage{listings}
+\lstset {
+    inputencoding=utf8,
+    extendedchars=true,
+    language=Python,
+    tabsize=4,
+    basicstyle=\footnotesize\ttfamily,
+    stringstyle=\em,
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    numbersep=10pt,
+    frame=single,
+    showstringspaces=false,
+    literate={á}{{\'a}}1    {Á}{{\'A}}1  % pt_BR accented chars
+             {à}{{\`a}}1    {À}{{\`A}}1
+             {ã}{{\~a}}1    {Ã}{{\~A}}1
+             {â}{{\^a}}1    {Â}{{\^A}}1
+             {é}{{\'e}}1    {É}{{\'E}}1
+             {í}{{\'i}}1    {Í}{{\'I}}1
+             {ó}{{\'o}}1    {Ó}{{\'O}}1
+             {õ}{{\~o}}1    {Õ}{{\~O}}1
+             {ô}{{\^o}}1    {Ô}{{\^O}}1
+             {ú}{{\'u}}1    {Ú}{{\'U}}1
+             {ü}{{\"u}}1    {Ü}{{\"U}}1
+             {ç}{{\c{c}}}1  {Ç}{{\c{C}}}1
+}
+
+%%
+% DOCUMENT PROPERTIES
+%
+\title{Criptografia numa Caixa de Fósforos}
+\author{José Lopes de Oliveira Jr.\\
+{\small \href{mailto:jlojunior@gmail.com}{jlojunior@gmail.com}}}
+
+
+%%%%%%%%%%%%%%%%%%%%
+% BODY
+%
+\begin{document}
+\maketitle
+\begin{abstract}
+\noindent Tão importante quanto conhecer os conceitos da criptografia, é saber 
+como colocá-los em prática e suas fragilidades.  Este texto objetiva apresentar 
+essas questões com exemplos usuais, de forma a dar uma visão mais cotidiana 
+sobre o assunto.  Espera-se que o leitor torne-se apto a identificar quais 
+sistemas criptográficos pode usar e quais práticas deve adotar para melhorar ou 
+manter o nível de segurança esperado para suas informações.
+\newline\newline
+\noindent \textbf{Palavras-chave:} criptografia, segurança da informação, 
+certificação digital, GnuPG.
+\end{abstract}
+
+
+\section{Introdução}
+\label{sec:intro}
+
+A criptografia é definida por \cite{uchoa} como a arte e ciência de manter 
+mensagens seguras.  De acordo com o mesmo autor, sistemas criptográficos são 
+necessários para evitar uma série de problemas de espionagem nas comunicações 
+eletrônicas.
+
+Este texto explorará a teoria e a prática acerca da criptografia, englobando 
+testes de segurança sobre arquivos criptografados.  Na seção \ref{sec:teoria}
+serão apresentados os tipos de algoritmos criptográficos existentes, bem como
+sistemas complementares a eles.  Na seção \ref{sec:pratica} será mostrado como
+utilizar os conceitos apresentados, usando o GnuPG.  Já na seção
+\ref{sec:ataques} serão mostradas algumas formas de ataque sobre a criptografia
+e na última seção, serão apresentadas as conclusões obtidas neste trabalho,
+seguidas de ideias para trabalhos futuros e as referências utilizadas.
+
+
+\section{Teoria}
+\label{sec:teoria}
+
+Nesta seção serão descritas as premissas acerca da criptografia, abrangendo os
+principais algoritmos e sistemas complementares ou derivados deles.
+
+\subsection{Criptografia}
+\label{sec:teoria:criptografia}
+De acordo com \cite{tanenbaum:1}, os métodos criptográficos seguem o padrão das
+equações:
+
+\begin{equation}
+\label{eq:crypt}
+    C = E(M, K_e)
+\end{equation}
+\begin{equation}
+\label{eq:decrypt}
+    M = D(C, K_d)
+\end{equation}
+
+Em (\ref{eq:crypt}) tem-se que a mensagem criptografada ($C$) é obtida pelo
+processo de cifragem ($E$) da mensagem ($M$), usando a chave de cifragem
+($K_e$).  Já em (\ref{eq:decrypt}) tem-se que a mensagem será novamente obtida
+aplicando-se o processo de decifragem ($D$) à mensagem cifrada, usando-se a
+chave de decifragem ($K_d$).
+
+\cite{uchoa} define que existem duas classes de algoritmos: os de chave privada
+ou simétricos e os de chave pública ou assimétricos e, como encontrado em
+\cite{tanenbaum}, o Princípio de Kerckhoff, afirma que uma premissa importante
+é que os algoritmos devem ser públicos e as chaves secretas.
+
+\subsection{Algoritmos de Chave Privada (Simétricos)}
+\label{sec:teoria:simetricos}
+Estes algoritmos usam uma mesma chave para criptografar e decriptografar e por
+isso a chave deve ser mantida em segredo \cite{uchoa}.  Algoritmos simétricos
+costumam usar chaves de poucos bits para fazer a criptografia, mas para
+melhorar a segurança, pode-se usar chaves de 1024 bits \cite{tanenbaum:1}.
+Ainda segundo a mesma fonte, são algoritmos eficientes pois a computação
+necessária para criptografar/decriptografar uma mensagem é controlável e sua
+maior desvantagem é que o emissor e o receptor devem possuir a chave secreta
+compartilhada e a mesma precisa ser transmitida de alguma forma, com segurança.
+
+\subsubsection{Data Encryption Standard (DES)}
+\label{sec:teoria:simetricos:des}
+Criado pela IBM e adotado pelo Governo dos Estados Unidos da América (EUA),
+este algoritmo não é mais seguro em sua forma original.  Gera um texto cifrado
+de 64 bits e utiliza chaves de 56 bits.  A chave é aplicada ao texto em 16
+iterações \cite{tanenbaum}.
+
+\subsubsection{3DES (Triple DES)}
+\label{sec:teoria:simetricos:3des}
+Conforme \cite{tanenbaum}, é uma variante do DES que usa duas chaves, $K_1$ e
+$K_2$, de 56 bits. Realiza um processo conhecido por
+\textit{Encryption-Decryption-Encryption} (EDE) para criptografar e
+\textit{Decryption-Encryption-Decryption} (DED) para decriptografar, aplicando
+$K_1$, $K_2$, $K_1$, respectivamente em cada estágio.  O esquema EDE/DED foi
+usado para garantir compatibilidade com o DES original, definindo $K_1 = K_2$.
+
+\subsubsection{Advanced Encryption Standard (AES)}
+\label{sec:teoria:simetricos:aes}
+O AES surgiu da necessidade de substituir o DES.  O Governo dos EUA promoveu um
+concurso público para selecionar o algoritmo ---a fim de dar transparência ao
+processo--- e o escolhido foi o Rijndael \cite{tanenbaum}.
+
+\cite{tanenbaum} afirma que o AES permite tamanhos de chaves e blocos de 128 a
+256 bits, com intervalos de 32 bits, sendo os comprimentos da chave e do bloco
+independentes.  Contudo, especifica que o bloco deve ter 128 bits e as chaves,
+128, 192 ou 256 bits, sendo que costuma-se usar 128 ou 256 bits apenas.
+
+Segundo \cite{tanenbaum}, tanto o DES quanto o AES utilizam cifras de
+substituição monoalfabéticas. Assim, ao processar o mesmo bloco de texto com a
+mesma chave, o mesmo resultado será obtido.  Para contornar este problema,
+conforme a mesma fonte, os modos \textit{electronic code block} (ECB), de
+encadeamento de blocos de cifras, de cifra de fluxo e de contador foram
+criados. Cada um com vantagens e desvantagens que os tornam aptos para
+determinadas situações.
+
+Outros algorimos de chave simética são Blowfish, IDEA, RC4, RC5, Serpent e
+Twofish.
+
+\subsection{Algoritmos de Chave Pública (Assimétricos)}
+\label{sec:teoria:assimetricos}
+\cite{tanenbaum} afirma que o maior problema da criptografia de chave simétrica
+é manter segredo sobre a chave secreta, pois ela precisa ser distribuída, mas
+deve ser confidencial.  Assim, Whitfield Diffie e Martin Hellman propuseram, em
+1976, um método radicalmente novo, onde:
+
+\begin{equation}
+M = D(E(M))
+\end{equation}
+
+Algoritmos com esse formato foram definidos como assimétricos ou de chave
+pública, pois utilizam uma chave para criptografar e outra para decriptografar
+\cite{uchoa}.  Normalmente a chave de criptografia é chamada de chave pública e
+a de decriptografia, de chave privada, mas há casos, como na assinatura digital
+---seção \ref{sec:teoria:assinaturas}---, em que é necessário inverter essa
+ordem ---chave privada para criptografar e chave pública para decriptografar.
+Como \cite{tanenbaum} explica, o conhecimento de uma chave a partir da outra é
+extremamente difícil.
+
+Esses algoritmos são mais lentos que os simétricos pois utilizam operações
+fáceis, como multiplicação, para criptografar ---normalmente alimentada por uma
+senha como semente para o algoritmo--- e operações difíceis para decriptografar
+\cite{tanenbaum}.
+
+Algoritmos de chave pública são amplamente utilizados para distribuir a chave
+de sessão, que passa a ser usada por algoritmos simétricos, como o DES ou o
+AES, mais rápidos \cite{tanenbaum}.  Tal método pode ser observado no
+funcionamento do \textit{Transport Layer Security} (TLS), por exemplo.
+
+Conforme \cite{tanenbaum}, o RSA é o algoritmo assimétrico mais famoso e é
+muito forte.  Ele utiliza chaves de pelo menos 1024 bits, o que o torna bem
+mais lento que os algoritmos de chave simétrica e sua segurança é baseada no
+fato de ser extremamente difícil fatorar números primos extensos ---geralmente
+1024 bits.
+
+Segundo \cite{uchoa}, a dinâmica dessa classe de algoritmos é que a pessoa
+divulga sua chave pública e sempre que alguém precisa, criptografa uma mensagem
+com essa chave e envia para a pessoa, que utiliza sua chave privada para
+decriptografar.
+
+Outros exemplos de algoritmos assimétricos são ElGamal e Digital Signature
+Standard (DSS).
+
+\subsection{Sumários de Mensagens ---\textit{Message Digests}}
+\label{sec:teoria:sumarios}
+É, como definido por \cite{tanenbaum}, uma função de hash unidirecional
+---comumente representada por $MD$--- que gera uma saída de tamanho fixo a
+partir de uma mensagem de tamanho variável.  Essa função tem quatro
+características:
+
+\begin{enumerate}
+    \item tendo $M$ é fácil calcular $MD(M)$;
+    \item tendo $MD(M)$ é impossível, efetivamente, encontrar $M$;
+    \item tendo $M$ não se pode achar $M | MD(M') = MD(M)$; e
+    \item uma mudança, mesmo de 1 bit, produz $MD(M)$ diferente.
+\end{enumerate}
+
+Ainda segundo \cite{tanenbaum}, para a terceira característica, a função deve
+ter 128 bits ou mais.  Para atender à quarta característica, a função deve
+embaralhar os bits, como os algoritmos de chave simétrica.
+
+Dois algoritmos notórios são Message Digest 5 (MD5) e Secure Hash Algorithm
+(SHA) \cite{tanenbaum:1}.
+
+\subsection{Assinaturas Digitais}
+\label{sec:teoria:assinaturas}
+\cite{tanenbaum} explica que assinatura digital é o método usado para verificar
+a integridade e evitar o não-repúdio de documentos públicos, impossibilitando
+fraudes no documento original.
+
+Ainda de acordo com \cite{tanenbaum}, o algoritmo para geração de uma
+assinatura digital começa com cálculo do hash do documento com um algoritmo
+específico, como MD5 ou SHA-1.  Depois criptografa-se esse hash com a chave
+privada do emissor e envia-se o resultado junto com o documento.
+
+O receptor, ao receber os dados, calcula o hash do documento e aplica a chave
+pública do emissor sobre o resultado enviado, obtendo o hash gerado pelo
+emissor.  Se os dois hashes forem iguais, tudo está correto.
+
+Este é um método viável pois a criptografia de chave pública ---lenta--- é
+aplicada apenas a uma pequena quantidade de bits ---o hash \cite{tanenbaum:1}.
+
+\subsubsection{Assinaturas de Chave Simétrica}
+\label{sec:teoria:assinaturas:simetricas}
+Segundo \cite{tanenbaum}, necessitam da presença de uma autoridade central e
+confiável.  Assim, as pessoas geram suas chaves e se cadastram junto a essa
+autoridade.  Sempre que for necessário enviar uma mensagem assinada para
+alguém, a pessoa criptografa sua mensagem com a chave gerada e a envia para a
+autoridade, junto com dados com o timbre e hora.  A autoridade decriptografa a
+mensagem para ter certeza que é do remetente e então a reenvia como texto
+simples ao destinatário, junto com a sua assinatura, para dar veracidade ao
+documento.
+
+A desvantagem desse método é que todos devem confiar plenamente na autoridade
+certificadora, que também poderá ler todas as mensagens que for encaminhar
+\cite{tanenbaum}.
+
+\subsubsection{Assinaturas de Chave Pública}
+\label{sec:teoria:assinaturas:assimetricas}
+De acordo com \cite{tanenbaum:1}, baseia-se na propriedade de comutação do
+algoritmo, ou seja, obter a mensagem a partir da criptografia da decriptografia
+e vice-versa:
+
+\begin{equation}
+M = E(D(M))
+\end{equation}
+\begin{equation}
+M = D(E(M))
+\end{equation}
+
+Assim, se Alice\footnote{\cite{oliveira:2} explica que a literatura adotou os
+nomes Alice e Bob para tornar mais didáticos os exemplos que usam algo como
+``criptografado por A e decriptografado por B.''} quiser enviar uma mensagem
+assinada para Bob, ela deverá ``criptografar'' a mensagem com sua chave privada
+e criptografar o resultado com a chave pública de Bob ---$E_b(D_a(M))$.  Quando
+Bob receber a mensagem, usará sua chave privada para decriptografar, aplicando
+a chave pública de Alice para ``decriptografar'' o resultado ---$D_b(E_a(M))$.
+Isso irá gerar a mensagem oriunda de Alice.
+
+\subsection{Gerenciamento de Chaves Públicas}
+\label{sec:teoria:pki}
+Conforme \cite{tanenbaum}, é uma forma de se disponibilizar chaves públicas em
+um repositório.  Neste contexto surge o \textit{Certification Authority} (CA)
+como agente que certifica chaves públicas ---garante que o seu dono é quem diz
+ser e que a chave não foi alterada por uma terceira parte.
+
+O X.509 é um padrão para certificados que define, dentre outras coisas, vários
+campos que um certificado enviado a uma CA deve conter \cite{tanenbaum}.
+
+Como não é interessante ter uma única CA no mundo e nem ter várias CAs, foi
+criada a \textit{Public Key Infrastructure} (PKI): um modo de estruturar
+componentes e definir padrões para os vários documentos e protocolos.  Neste
+caso, a CA de nível superior ---raíz--- certifica CAs de segundo nível
+---\textit{Regional Authorities} (RAs)---, que certificam CAs reais que emitem
+por sua vez, os certificados X.509 \cite{tanenbaum}.
+
+\cite{tanenbaum} ainda pondera que a autoridade que concede um certificado pode
+revogá-lo.  Há várias possibilidades de implementação disso, que passam por uma
+\textit{Certification Revogation List} (CRL).  Esta lista pode ser atualizada
+periodicamente com a situação de cada certificado, somente com os certificados
+válidos etc., dependendo da forma com que for implementada.
+
+
+\section{Prática}
+\label{sec:pratica}
+O GNU Privacy Guard (GnuPG) é, segundo \cite{gnupg:hp}, uma implementação
+completa e livre do padrão OpenPGP, como definido na RFC 4880.  O comando
+\texttt{gpg}, que será utilizado neste artigo, de acordo com \cite{gnupg:man},
+é a parte OpenPGP do GnuPG: uma ferramenta para prover criptografia digital e
+serviços de assinatura usando o padrão OpenPGP e que provê funcionalidades
+completas para o gerenciamento de chaves criptográficas.
+
+Os conceitos da seção \ref{sec:teoria} serão aplicados com o GnuPG nesta seção.
+Não é objetivo deste texto ser, portanto, um manual definitivo para o programa.
+Caso o leitor queira saber mais opções e exemplos de utilização do GnuPG,
+recomenda-se a leitura de \cite{oliveira:1} e do seu próprio manual, em
+\cite{gnupg:man}.  A versão do programa utilizada nos testes foi a 1.4.11,
+juntamente com o arquivo da RFC
+4880\footnote{\url{http://www.ietf.org/rfc/rfc4880.txt}}.
+
+\subsection{Criptografia de Chaves Simétricas}
+\label{sec:pratica:simetrica}
+O primeiro teste realizado foi criptografar o arquivo, usando o AES com 256
+bits, para gerar um arquivo binário criptografado ---\texttt{rfc4880.txt.gpg}:
+
+\begin{verbatim}
+$ gpg --symmetric --cipher-algo aes256 rfc4880.txt
+\end{verbatim}
+
+O arquivo binário não é, teoricamente, legível por humanos.  Para gerar um
+arquivo compreensível, pode-se usar a opção \texttt{-{}-armor}, como em:
+
+\begin{verbatim}
+$ gpg --armor --symmetric --cipher-algo aes256 rfc4880.txt
+\end{verbatim}
+
+O comando de decriptografia é o mesmo para ambas as saídas geradas
+---\texttt{.gpg} ou \texttt{.asc}:
+
+\begin{verbatim}
+$ gpg rfc4880.txt.asc
+\end{verbatim}
+
+O interessante de se gerar um arquivo texto é fazer testes com ele.  Pode-se,
+por exemplo, inserir ou remover trechos no mesmo e tentar decriptografar.
+Pode-se ainda trocar algumas partes do texto, salvar e observar a falha na
+decriptografia.  Então pode-se voltar para a versão original e constatar que a
+decriptografia ocorre com sucesso ---o GnuPG não leva em consideração o
+\textit{timestamp} do arquivo.
+
+\subsection{Criptografia de Chaves Assimétricas}
+\label{sec:pratica:assimetrica}
+A primeira etapa de testes foi de geração das chaves para Alice e Bob.  Para
+Alice:
+
+\begin{verbatim}
+$ gpg --gen-key
+\end{verbatim}
+
+\begin{enumerate}
+    \item \texttt{enter} para gerar chaves RSA ---padrão na versão utilizada.
+    \item \texttt{enter} para usar chaves de 2048 bits ---padrão.
+    \item \texttt{enter} para as chaves não expirarem ---padrão. \texttt{y}
+        para confirmar.
+    \item \begin{itemize}
+            \item \textit{Real name:} \texttt{Alice}
+            \item \textit{Email address:} \texttt{alice@example.com}
+            \item \textit{Comment:} \texttt{enter}.
+            \item \textit{Passphrase:} \texttt{alice}
+          \end{itemize}
+    \item Entropia. Deve-se digitar algo no teclado e/ou mover o mouse para
+        gerar entropia para as chaves.
+\end{enumerate}
+
+Para Bob os passos foram iguais, apenas os dados do passo 4 diferiram:
+
+\begin{itemize}
+    \item \textit{Real name:} \texttt{Robert}
+    \item \textit{Email address:} \texttt{bob@example.com}
+    \item \textit{Comment:} \texttt{enter}.
+    \item \textit{Passphrase:} \texttt{bob}
+\end{itemize}
+
+Para exportar as chaves públicas de Alice e Bob, pode-se usar o parâmetro
+\texttt{-{}-export} do \texttt{gpg}:
+
+\begin{verbatim}
+$ gpg --armor --export alice
+$ gpg --armor --export bob
+\end{verbatim}
+
+Sem a opção \texttt{-{}-armor}, será exportado um arquivo binário do GnuPG.
+Para direcionar a saída para um arquivo, utiliza-se a opção \texttt{-{}-output}
+seguida do nome do arquivo:
+
+\begin{verbatim}
+$ gpg --output alice-pubkey.gpg --export alice
+\end{verbatim}
+
+Para exportar a chave privada, troca-se \texttt{-{}-export} por
+\texttt{-{}-export-secret-key}:
+
+\begin{verbatim}
+$ gpg --output alice-seckey.asc --armor --export-secret-key alice
+\end{verbatim}
+
+É importante usar esta opção com cautela e lembrar-se da grande
+responsabilidade que se deve ter sobre o sigilo da chave privada.
+
+Para importar uma chave pública, basta usar a opção \texttt{-{}-import}:
+
+\begin{verbatim}
+$ gpg --import bob-pubkey.asc
+\end{verbatim}
+
+Pode-se imaginar um cenário onde Alice deseja enviar o arquivo
+\texttt{rfc4880.txt}  de forma segura para Bob, usando criptografia
+assimétrica.  Para isso ela deverá criptografá-lo com a chave pública de Bob:
+
+\begin{verbatim}
+$ gpg --encrypt --recipient bob rfc4880.txt
+\end{verbatim}
+
+Isso vai gerar o arquivo binário criptografado \texttt{rfc4880.txt.gpg}.  Para
+gerar um arquivo texto, pode-se incluir a opção \texttt{-{}-armor} como
+argumento para o GnuPG.  Neste caso, será gerado um arquivo com a extensão
+\texttt{.asc}.  Este arquivo poderia ser enviado para Bob por email, por
+exemplo.
+
+Ao receber o arquivo, Bob deve aplicar sua chave privada no mesmo para
+decriptografá-lo:
+
+\begin{verbatim}
+$ gpg --output rfc4880.txt --decrypt rfc4880.txt.gpg
+\end{verbatim}
+
+Ele digitaria a senha que usou para gerar suas chaves ---\texttt{bob}--- e o
+arquivo \texttt{rfc4880.txt} seria criado com o texto original.  Interessante
+notar que, caso o parâmetro \texttt{-{}-output} e seu argumento sejam omitidos,
+o GnuPG direcionará o texto decriptografado para a saída padrão --- a tela, na
+maioria dos casos.  Outra saída possível seria omitir esses dados e
+redirecionar a saída para um arquivo.
+
+Esse esquema é muito útil quando autenticação e sigilo são necessários, pois
+Alice teria certeza de que o texto seria lido apenas por Bob.  Ele, por sua
+vez, poderia saber se foi Alice mesmo quem enviou, apenas criptografando uma
+mensagem com a chave pública dela e enviando.
+
+\subsection{Assinaturas Digitais}
+\label{sec:pratica:assinaturas}
+Bob precisaria saber que o \textit{script} a ser publicado no site foi
+realmente enviado por Alice, mas o seu conteúdo não é segredo para ninguém.
+Neste caso entra o conceito de assinatura digital.  Como Alice não requer
+sigilo sobre o arquivo para Bob, ela assinaria o arquivo com:
+
+\begin{verbatim}
+$ gpg --local-user alice --sign rfc4880.txt
+\end{verbatim}
+
+Seria então pedida a senha que Alice usou na criação da sua chave, para assinar
+o documento.  O parâmetro \texttt{-{}-local-user} pode ser omitido caso haja
+apenas um usuário cadastrado no GnuPG ---arquivo
+\texttt{$\sim$/.gnupg/pubring.gpg}.  Caso ele seja usado, como neste exemplo,
+buscará pela primeira ocorrência que casar com o argumento passado
+---\texttt{alice}, no caso.  Se houver ambiguidade neste nome, pode-se usar o
+identificador da chave, e.g., \texttt{e81676ca} ---lembrando que o GnuPG
+\textbf{não} é \textit{case-sensitive}.  O comando mostrado geraria o arquivo
+binário \texttt{rfc4880.txt.gpg}. Para gerar um arquivo separado, substitui-se
+a opção \texttt{-{}-sign} por \texttt{-{}-clearsign}, que resultaria no arquivo
+\texttt{rfc4880.txt.asc}.
+
+Se um arquivo texto for gerado, basta listá-lo para conferir que o texto está
+legível.  Contudo, ao final do mesmo, terão sido adicionadas algumas linhas com
+a versão do GnuPG usada para assinar e a assinatura propriamente dita.  Para
+gerar a assinatura em um arquivo separado, pode-se substituir a opção
+\texttt{-{}-sign} ---ou \texttt{-{}-clearsign}--- por \texttt{-{}-detach-sign}.
+Usado dessa forma, o GnuPG criará um arquivo binário com a extensão
+\texttt{sig}.  Caso seja interessante gerar um arquivo texto, pode-se usar a
+opção \texttt{-{}-armor} na chamada do GnuPG, como no próximo trecho de código:
+
+\begin{verbatim}
+$ gpg --armor --local-user alice --detach-sign rfc4880.txt
+\end{verbatim}
+
+Isso vai gerar o arquivo \texttt{rfc4880.txt.asc}, que se for listado mostrará
+a assinatura do arquivo.
+
+Ao receber o arquivo de Alice, Bob poderá verificá-lo com o comando:
+
+\begin{verbatim}
+$ gpg --verify rfc4880.txt.gpg
+\end{verbatim}
+
+Obviamente isto já leva em consideração que Bob tenha importado a chave pública
+de Alice para o seu sistema.  Caso Alice tenha gerado a assinatura em um
+arquivo separado, basta Bob passar o arquivo com a assinatura e o arquivo com o
+texto como argumentos para \texttt{-{}-verify}:
+
+\begin{verbatim}
+$ gpg --verify rfc4880.txt.asc rfc4880.txt
+\end{verbatim}
+
+Uma saída do tipo:
+
+\begin{verbatim}
+gpg: Signature made Mon 22 Jul 2013 20:55:29 AM BRT using RSA key
+ID BE7A9C8C
+gpg: Good signature from "Alice <alice@example.com>"
+\end{verbatim}
+
+Indica que o arquivo realmente confere com aquele enviado por Alice.  Para
+fazer um teste de integridade, pode-se abrir o arquivo \texttt{rfc4880.txt},
+fazer qualquer alteração ---como a adição de uma letra--- e salvar.  Quando a
+verificação for feita, a palavra \texttt{Good}, na segunda linha da saída, será
+trocada por \texttt{BAD}, indicando que a assinatura não confere com o arquivo.
+Isso significa que se Alice fizer qualquer alteração no arquivo após gerar a
+assinatura, ela terá de refazer a mesma, sob pena de poder ter seu arquivo
+rejeitado por Bob.
+
+
+\section{Ataques}
+\label{sec:ataques}
+
+De acordo com \cite{gnupg:man}, a parte mais frágil do sistema criptográfico
+inteiro é a senha do usuário.  Desta forma, bem mais simples do que atacar
+fragilidades dos algoritmos criptográficos modernos ---como o AES---,  é tentar
+descobrir a senha usada na criptografia.  Nesta seção serão apresentados dois
+exemplos neste sentido, um para a criptografia simétrica e outro para
+assimétrica.
+
+\subsection{Criptografia Simétrica}
+\label{sec:ataques:simetrica}
+
+Objetivando testar a segurança de arquivos criptografados com algoritmos
+simétricos, foi criado o programa listado na figura \ref{lst:gpgbf.py}.  O
+mesmo realiza um ataque de força bruta simples contra um arquivo passado por
+parâmetro, testando combinações de senhas de até 6 caracteres, com letras
+minúsculas e números ---não inclui caracteres acentuados ou cedilha.  Para
+realizar o primeiro teste, o arquivo \texttt{rfc4880.txt} foi criptografado
+usando a senha \texttt{alice}.
+
+\begin{verbatim}
+$ gpg --symmetric --cipher-algo aes256 rfc4880.txt
+\end{verbatim}
+
+\begin{figure}
+\caption{Programa para atacar arquivos criptografados com o GnuPG.}
+\label{lst:gpgbf.py}
+    \lstinputlisting[lastline=59]{gpgbf.py}
+\end{figure}
+\begin{figure}
+\caption{Continuação da figura \ref{lst:gpgbf.py}.}
+    \lstinputlisting[firstline=60,firstnumber=60]{gpgbf.py}
+\end{figure}
+
+Tendo o arquivo criptografado e o \textit{script} ---arquivo
+\texttt{gpgbf.py}--- no mesmo diretório, pode-se iniciar o ataque
+com\footnote{A saída foi redirecionada para \texttt{/dev/null}, pois o foco do
+teste foi o tempo para descoberta da senha.  Em um ambiente normal, o comando
+\texttt{time} e esse redirecionamento podem ser omitidos.}:
+
+\begin{verbatim}
+$ time python gpgbf.py rfc4880.txt.gpg > /dev/null
+\end{verbatim}
+
+Nos testes realizados\footnote{Para cada exemplo foram feitos três testes e o
+resultado foi a média deles.}, em um MacBook 4.1 MB404*/A ---processador
+Intel{\footnotesize \textsuperscript{\textregistered}} Core{\footnotesize
+\textsuperscript{\texttrademark}} 2 Duo e 2 GB de memória--- rodando Ubuntu
+12.04\footnote{Sistema com todas as atualizações instaladas até o momento de
+execução dos testes.  Durante este período, havia outros processos rodando, que
+devem ter afetado o desempenho dos programas.}, levou-se mais de 30 minutos
+para quebrar a senha ---os testes foram interrompidos após este tempo.
+
+Para o segundo teste, o arquivo foi criptografado novamente usando-se a senha
+\texttt{bob}.  Neste caso, com uma senha mais fraca ainda, levou-se $\approx$
+32,15 segundos para descobrir a chave.
+
+\subsection{Criptografia Assimétrica}
+\label{sec:ataques:assimetrica}
+
+Uma característica das chaves privadas é que elas precisam de uma senha
+---definida durante a sua criação--- para serem utilizadas.  Para isso não
+basta que seu utilizador possua o arquivo da chave: ele precisa saber a senha
+utilizada nela.
+
+Imaginando um cenário onde se possua a chave privada, mas não se conheça a
+senha, pode-se lançar mão do John the
+Ripper\footnote{\url{http://www.openwall.com/john}} (John) para realizar
+ataques de força bruta ou de dicionário sobre a chave privada.
+
+John é, segundo \cite{john}, um rápido quebrador de senhas para diversos
+sistemas operacionais, cujo objetivo primário é de detectar senhas fracas no
+Unix.  Por se tratar de um software livre, qualquer pessoa com conhecimento
+suficiente pode alterar o seu código-fonte e liberá-lo, criando um
+\textit{fork} do projeto.  Um desses \textit{forks} possui um componente que
+torna possível realizar ataques sobre chaves privadas e pode ser baixado em seu
+repositório
+oficial\footnote{\url{https://github.com/magnumripper/JohnTheRipper}}.
+
+Após o download, basta descompactar o arquivo, acessar o diretório criado e
+consultar o arquivo \texttt{docs/INSTALL} para instruções sobre a instalação.
+
+Uma vez que o John esteja pronto para uso, pode-se usar a chave privada de
+Alice ---criada na seção \ref{sec:pratica:assimetrica}---, que utiliza uma
+senha fraca ---\texttt{alice}--- para testar o funcionamento do programa.
+
+Primeiramente deve-se exportar a chave privada de Alice, de acordo com a seção
+\ref{sec:pratica:assimetrica}.  Feito isso, é necessário usar o componente
+\texttt{gpg2john} para transformar a chave em um hash aceitável pelo John:
+
+\begin{verbatim}
+$ run/gpg2john alice-seckey.asc > alice-seckey-hash.asc
+\end{verbatim}
+
+Obtido o hash ---arquivo \texttt{alice-seckey-hash.asc}---, basta aplicar o
+John sobre ele e aguardar o retorno do programa:
+
+\begin{verbatim}
+$ run/john alice-seckey-hash.asc
+\end{verbatim}
+
+Nos dois exemplos foram necessários $\approx$ 0,35 segundos\footnote{Entre cada
+execução, o arquivo \texttt{run/john.pot} foi apagado, pois ele é um
+\textit{cache} de senhas descobertas, para agilizar futuras operações sobre o
+mesmo arquivo} para quebrar as senhas.
+
+É interessante notar que o John permite ataques baseados em dicionários.  Para
+isso deve-se criar um arquivo texto em branco ---e.g., \texttt{alice-
+dict.lst}--- e colocar uma tentativa de senha por linha.  Usa-se então o
+parâmetro \texttt{-{}-wordlist} para indicar o arquivo de dicionário:
+
+\begin{verbatim}
+$ run/john --wordlist=alice-dict.lst alice-seckey-hash.asc
+\end{verbatim}
+
+No caso de ataques de dicionário, caso a senha esteja no arquivo, o tempo para
+descoberta é instantâneo ---principalmente porque as senhas usadas nos exemplos
+são candidatas para vários dicionários\footnote{O John vem com um arquivo
+---\texttt{run/password.lst}--- que é um dicionário básico de senhas.  A título
+de curiosidade, ele possui as senhas dos dois exemplos cadastradas.}  Na
+Internet há vários arquivos com dicionários prontos para uso.  A OpenWall
+---mantenedora do John---, por exemplo, comercializa alguns deles, mas muitos
+podem ser encontrados de graça na Internet.
+
+
+\section{Conclusão}
+\label{sec:conclusao}
+A criptografia provê uma camada de segurança extra às comunicações eletrônicas.
+No caso da interceptação de uma mensagem criptografada por uma terceira parte,
+não é trivial a obtenção do conteúdo decriptografado sem o conhecimento das
+chaves criptográficas.  Ainda assim, como no dito popular, \textit{``uma
+corrente é tão forte quanto seu elo mais fraco''}, de nada adianta utilizar
+métodos criptográficos de última geração, se não houver cuidado com o
+gerenciamento das chaves.
+
+Através dos exemplos apresentados na seção \ref{sec:ataques}, pode-se perceber
+que o tamanho da senha é, assim como a diversidade de caracteres ---e.g.,
+letras maiúsculas, minúsculas, números e caracteres especiais--- que compõem a
+mesma, fator decisivo para segurança em ataques de força bruta.  Contudo, uma
+senha longa e com diferentes tipos de caracteres, poderá ser facilmente
+descoberta por um ataque de dicionário, caso seja uma palavra ou expressão de
+uso comum.
+
+É importante, portanto, que haja uma política bem definida para as senhas
+usadas nos sistemas de criptografia.  Os usuários devem estar cientes sobre a
+utilização de senhas fortes ---que utilizem conjuntos de caracteres diferentes
+e que não sejam suscetíveis a ataques de dicionário--- e sobre a importância de
+mantê-las em sigilo.  Além disso, os administradores de sistema devem
+atentar-se para a correta configuração da infraestrutura, de forma que dados
+cruciais para a seguraça ---como senhas e chaves privadas--- trafeguem de forma
+segura pela rede e tenham seu acesso restrito dentro de uma organização.
+
+Desta forma, pode-se perceber que a educação das pessoas, no tangente à
+segurança da informação e à correta configuração do ambiente, é, somado à
+utilização de técnicas criptográficas, fator primordial para manutenção da
+segurança a níveis aceitáveis.
+
+
+\section{Propostas para Trabalhos Futuros}
+\label{sec:propostas}
+Apesar do programa apresentado como exemplo na figura \ref{lst:gpgbf.py} ser
+apenas ilustrativo, pode-se melhorá-lo, fazendo com que seja capaz de, por
+exemplo, processar um conjunto maior de caracteres, que priorize palavras de
+uso comum e aceite sugestões do usuário, como o parâmetro \texttt{-{}-wordlist}
+do John.  Além disso, pode-se reescrevê-lo usando \textit{threads}, como forma
+de melhor seu desempenho.
+
+Seria interessante ainda, fazer um estudo mais aprofundado sobre as classes de
+algoritmos ---simétricos e assimétricos---, sobre os algoritmos apresentados ou
+mesmo apresentar outras soluções e seus usos.  Igualmente relevante seria a
+escolha de outra solução similar ao GnuPG, para mostrar como ela trata o
+processo de criptografia e o gerenciamento das chaves.  Ainda sobre o GnuPG,
+poder-se-ia apresentar ou desenvolver uma interface gráfica para o mesmo, como
+forma de mostrar as facilidades que ela traria para o processo de criptografia
+e o gerenciamento de chaves criptográficas.
+
+
+%%
+% BIBLIOGRAPHY
+%
+\bibliographystyle{apalike}
+\bibliography{fosforos}
+
+\end{document}

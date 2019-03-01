@@ -1,0 +1,124 @@
+% Hevea - ITILv3 Resumo
+% An ITILv3 overview.
+%
+% Author: José Lopes de Oliveira Jr. <jilo.cc>
+%
+% LICENSE
+% This program is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%%
+
+
+\chapter{Fundamentos}
+\label{cha:fund}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\textwidth]{img/fish_xray}\\
+    {\scriptsize Fish X-Ray --- Arstochromis Christyi}
+\end{figure}
+
+Serviço é um meio de entregar valor aos clientes, facilitando os resultados que
+eles querem alcançar, sem ter que assumir custos e riscos. Quando se adquire um
+carro, por exemplo, o comprador quer que o mesmo se locomova sem ter que se
+preocupar com os componentes mecânicos que possibilitam isso.
+
+O Gerenciamento de Serviços de TI (Information Technology Service Management
+--- ITSM) é um conjunto de habilidades da organização para fornecer valor ao
+cliente em forma de serviços. Quando uma organização passa a depender da TI
+para funcionar, esta pode ser encarada como um Ativo Estratégico.
+\nomenclature{ITSM}{Information Technology Service Management}%
+
+Ativos de Serviços ---Recursos e Habilidades--- são usados pelo provedor de TI
+para entregar um serviço. Recursos são necessários para a produção de um bem ou
+realização de um serviço ---e.g., um computador, software, capital financeiro.
+Habilidades são a capacidade  da organização de usar os recursos para produzir
+valor ---e.g., conhecimento, processos, organização.
+
+Para se criar valor para os serviços é necessário unir Utilidade e Garantia.
+Utilidade diz respeito ao que o cliente quer ---e.g., imprimir um documento.
+Garantia diz respeito a como o cliente quer receber o serviço ---e.g., como a
+impressora é gerenciada para imprimir documentos.
+
+
+\section{Processos, Funções e Papéis}
+\label{sec:funda:proc}
+
+Estes são termos importantíssimos dentro da
+ITIL\textsuperscript{\textregistered}, sendo o seu entendimento primordial para
+o sucesso da certificação.
+
+Uma organização normalmente é composta por setores. Isso é ruim, pois dificulta
+a comunicação e tira o foco dos funcionários ---em vez de pensarem no cliente,
+pensam no seu gerente. Processos buscam resolver esses problemas.
+
+\textbf{Processo} é um conjunto estruturado de atividades para produzir um
+determinado resultado. Processos não podem existir sozinhos. Alguém precisa
+executá-los. Então existem as funções.
+
+\textbf{Função} é um time ou grupo de pessoas e ferramentas usadas para um ou
+mais processos e atividades. Como é necessário que todo processo tenha um
+proprietário e responsáveis por executá-lo, surgem os papéis.
+
+\textbf{Papel} é um conjunto de responsabilidades e autoridades concedidas a
+uma pessoa ou time.
+
+É importante notar que  um papel não é um cargo, assim como um processo não é
+um setor dentro de uma empresa. Dessa maneira, uma pessoa pode desempenhar
+vários papéis e a implantação dos processos torna-se independente da estrutura
+organizacional da empresa.
+
+A ITIL\textsuperscript{\textregistered}v3 é composta por 5 etapas que juntas
+têm um total de 24 processos. Cada processo é iniciado por um gatilho e passa
+ser controlado e desenvolvido pelas pessoas nas funções específicas dele. Essas
+pessoas usam habilidades e recursos para realizar cada atividade que compõe o
+processo, gerando a saída do mesmo.
+
+Note que um processo deve ser mensurável e orientado ao cliente. Além disso,
+todo processo tem um proprietário, que assegura que o desenvolvimento
+transcorra como acordado e documenta tudo isso, para atingir os objetivos
+propostos. Já o Proprietário do Serviço, faz o primeiro contato com o cliente e
+é responsável pelo serviço como um todo.
+
+
+\section{Matriz RACI}
+\label{sec:funda:raci}
+
+A matriz RACI é usada para definir papéis para execução de um processo. Ela
+recebe este nome por ser composta por 4 especificações:
+\nomenclature{RACI}{Responsible, Accountable, Consulted, Informed}%
+\begin{itemize}
+    \item Responsible: os responsáveis pela atividade.
+    \item Accountable: prestador de conta da atividade (normalmente é o
+        proprietário do processo --- somente uma pessoa pode receber esta
+        atribuição dentro de uma atividade).
+    \item Consulted: pessoas que serão consultadas na necessidade de
+        compartilhamento de uma informação.
+    \item Informed: pessoas que devem ser informados durante o progresso.
+\end{itemize}
+
+
+\section{Ciclo de Vida do Serviço}
+\label{sec:funda:ciclo}
+
+É composto por fases que levam o nome e são definidas em cada um dos 5 livros
+da ITIL\textsuperscript{\textregistered}v3: Estratégia de Serviço, Desenho de
+Serviço, Transição de Serviço, Operação de Serviço e Melhoria de Serviço
+Continuada.
+
+Cada fase do ciclo de vida recebe como entrada, a saída da anterior e gera
+entradas para a próxima. É interessante notar que a Melhoria de Serviço
+Continuada, apesar de aparecer por último na sequência, faz parte de todo o
+ciclo de vida. Dessa forma, não se chega num ponto para buscar a melhoria do
+serviço: ela deve estar presente em todas as fases.

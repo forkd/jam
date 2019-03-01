@@ -1,0 +1,198 @@
+% Hevea - ITILv3 Resumo
+% An ITILv3 overview.
+%
+% Author: José Lopes de Oliveira Jr. <jilo.cc>
+%
+% LICENSE
+% This program is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%%
+
+
+\chapter{Transição de Serviço}
+\label{cha:trans}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{img/ant_microscope}\\
+    {\scriptsize An Army of One --- Arthtopod Image Salon}
+\end{figure}
+
+Esta fase ajuda a organização a planejar mudanças nos serviços e implantar
+liberações de serviço com sucesso no ambiente de produção. Assegura que haja o
+mínimo de impacto no serviços em produção quando uma mudança ou novo serviço
+for implantado. Além disso, garante que os requisitos da Estratégia do Serviço
+estejam definidos no Pacote de Desenho de Serviço.
+
+
+\section{Conceitos}
+\begin{itemize}
+    \item Item de Configuração (IC): é um ativo, componente do serviço ou
+        qualquer outro item que está ou estará sob o controle do processo de
+        Gerenciamento da Configuração. Exemplos: servidores, aplicativos,
+        documentações de processos, Pacote de Desenho de Serviço, Plano de
+        Negócio.
+    \item Banco de Dados de Gerenciamento da Configuração (BDGC): é um
+        repositório de informações onde serão armazenados os registros de ICs.
+        Cada IC armazenado no BDGC deve ter um identificador único. Usando
+        várias aplicações para esta finalidade, a organização poderá ter vários
+        BDGCs.
+    \item Sistema de Gerenciamento de Configuração (SGC): armazena todas as
+        informações dos ICs dentro de um escopo determinado. Os diversos BDGCs
+        que existirem na organização precisam ser integrados para que as
+        informações não fiquem duplicadas e desatualizadas.
+    \item Sistema de Gerenciamento de Conhecimento de Serviço (SGCS): é formado
+        por um conjunto de dados em base central. Os BDGCs alimentam o SGC, que
+        fornece informações para o SGCS e elas suportam os processos de tomada
+        de decisão. A forma com que as pessoas usam as informações gera o
+        conhecimento. Não há como armazenar conhecimento, pois ele está
+        relacionado a experiências e habilidades das pessoas.
+    \item Biblioteca de Mídia Definitiva (BMD): é uma biblioteca segura na qual
+        versões autorizadas definitivas de todas as mídias de ICs são
+        armazenadas e protegidas ---está mais relacionada aos meios físicos de
+        armazenamento do que o BDGC.
+    \item Mudança de Serviço: designa uma mudança em um serviço existente ou
+        uma introdução de novo serviço no ambiente de produção.
+	\item Tipos de Mudanças:
+        \begin{itemize}
+            \item Padrão: mudança em um serviço ou infraestrutura que é
+                pré-autorizada pelo Gerenciamento de Mudança ---é uma rotina
+                definida por um script padrão.
+            \item Normal: é levantada por um iniciador que requer uma mudança
+                ---precisa ser autorizada antes de executada.
+            \item Emergencial: precisa ser implantada rapidamente para resolver
+                um incidente, por isso nem sempre pode-se realizar todos os
+                testes.
+        \end{itemize}
+
+	\item 7 Rs do Gerenciamento de Mudança:
+        \begin{enumerate}
+            \item Raise (Quem submeteu a mudança?)
+            \item Reason (Qual é a razão da mudança?)
+            \item Return (Qual é o retorno requerido a partir da mudança?)
+            \item Risks (Quais são os riscos envolvidos na mudança?)
+            \item Resources (Quais são os recursos necessários para entregar a
+                mudança?)
+            \item Responsible (Quem é o responsável pela mudança?)
+            \item Relationship (Qual é a relação entre esta mudança e outras
+                mudanças?).
+        \end{enumerate}
+
+    \item Unidade de Liberação: descreve a porção de um serviço ou
+        infraestrutura de TI que é normalmente liberada de acordo com a
+        política de liberação da organização.
+    \item Modelo V de Serviço: serve como uma ferramenta para mapear os
+        diferentes níveis de configuração que precisam ser construídos e
+        testados. Quanto mais cedo os testes forem feitos, mais cedo as falhas
+        serão descobertas, evitando-se o retrabalho.
+\end{itemize}
+\nomenclature{IC}{Item de Configuração}
+\nomenclature{BDGC}{Banco de Dados de Gerenciamento da Configuração}
+\nomenclature{SGC}{Sistema de Gerenciamento da Configuração}
+\nomenclature{SGCS}{Sistema de Gerenciamento de Conhecimento de Serviço}
+\nomenclature{BMD}{Biblioteca de Mídia Definitiva}
+
+
+\section{Processos}
+\label{sec:trans:processos}
+\subsection{Gerenciamento de Mudança}
+Assegura que mudanças são feitas de forma controlada e são avaliadas,
+priorizadas, planejadas, testadas, implantadas e documentadas. Gerenciar
+mudanças não é fazer mudanças que não ofereçam riscos, mas tornar os riscos
+mapeados e gerenciados. Se a TI for muito ágil para implantar as mudanças, pode
+provocar incidentes, interrupções e retrabalhos. Se a TI for demasiadamente
+burocrática, pode prejudicar o negócio do cliente. O escopo do Gerenciamento de
+Mudança cobre as mudanças desde a base de ativos de serviço e ICs até o
+completo ciclo de vida do serviço. Cada organização deve definir as mudanças
+que ficarão fora do escopo do seu processo de Gerenciamento de Mudança.
+
+Requisição de Mudança (RDM) é uma requisição formal para mudar um ou mais ICs.
+O Comitê Consultivo de Mudanças (CCM) é formado por pessoas que se reúnem para
+autorizar a mudança e assistir na sua avaliação e priorização.
+\nomenclature{RDM}{Requisição de Mudança}
+\nomenclature{CCM}{Comitê Consultivo de Mudanças}
+
+O primeiro passo é registrar uma RDM, então os \emph{stakeholders} revisam a
+RDM, verificando se ela está em conformidade. Em seguida, a mudança é analisada
+e avaliada ---entram aqui os 7 Rs--- e o CCM ou o Gerente de Mudança determina
+se a mudança será implantada. Caso seja, determina-se sua prioridade com base
+no impacto e na urgência. A próxima etapa é a coordenação da implantação, onde
+o Gerenciamento de Liberação e Implantação coordenará as atividades envolvidas
+na construção e criação de liberações. Uma vez implantada, a mudança passará
+por uma avaliação para checar se ela cumpriu o seu propósito.
+
+O Gerente de Mudança será o responsável por este processo, atuando desde o
+registro da RDM junto ao cliente, até a revisão da mudança e a produção de
+relatórios.
+
+
+\subsection{Gerenciamento da Configuração e de Ativo de Serviço}
+É o processo que identifica todos os ICs necessários para entregar os serviços
+de TI. Certifica que as informações sobre os ICs nos BDGCs são corretas e
+atuais. Alguns conceitos são definidos aqui.
+\begin{itemize}
+	\item Biblioteca Segura: coleção de ICs.
+	\item Armazém Seguro: local onde podem ser armazenados ativos de TI.
+    \item Biblioteca de Mídia Definitiva: é a Biblioteca Segura onde versões de
+        software autorizadas são armazenadas.
+    \item Peças Definitivas: Armazém Seguro onde estão as peças sobressalentes
+        de hardware.
+    \item Linha de Base de Configuração: configuração aprovada de um serviço,
+        produto ou infraestrutura.
+	\item Instantâneo (Snapshot): cópia do estado atual de um IC ou ambiente.
+\end{itemize}
+
+Vários papéis são definidos aqui. Gerente de Ativos de Serviço, Gerente de
+Configuração, Analista de Configuração, Bibliotecário de Configuração,
+Administrador de Ferramentas SGC.
+
+
+\subsection{Gerenciamento de Liberação e Implantação}
+Faz o controle de versões e controla as instalações de software, hardware e
+outros componentes de infraestrutura, do ambiente de desenvolvimento ao
+ambiente de testes e depois para o ambiente de produção.Vai assegurar que haja
+o mínimo impacto não precedente nos serviços de produção e na organização de
+operações e suporte.
+
+Unidade de Liberação é a parte do serviço ou infraestrutura que está incluída
+na liberação de acordo com as diretrizes de liberação da organização. A forma
+de distrubuição pode ser:
+\begin{itemize}
+    \item Big Bang: implanta o serviço novo ou alterado para todos os usuários
+        ao mesmo tempo;
+	\item Fase: é feita para parte dos usuários;
+    \item Empurrada: o componente de serviço é implantado à partir da área
+        central para usuários em locais remotos;
+	\item Puxada: o sistema do usuário é responsável por buscar a atualização; e
+    \item Automatizada ou Manual: liberações maiores podem ser automatizadas e
+        menores podem ser feitas manualmente.
+\end{itemize}
+
+Um Pacote de Liberação pode ser a única Unidade de Liberação ou uma coleção
+delas. Este processo consiste basicamente das seguintes atividades:
+\begin{itemize}
+	\item Planejamento
+	\item Preparação para Construção
+	\item Teste e Implantação
+	\item Construção e Teste
+	\item Teste de Serviço e Pilotos
+	\item Planejamento para Implantação
+	\item Transferência
+	\item Implantação e Retirada
+	\item Verificação da Implantação
+	\item Suporte para o Período de Funcionamento Experimental
+\end{itemize}
+
+Os papéis definidos aqui são: Gerente de Liberação e Implantação, Gerente de
+Empacotamento e Construção de Liberação, Equipe de Implantação.
